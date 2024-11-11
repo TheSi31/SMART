@@ -3,11 +3,12 @@ import { Dropdown, ConfigProvider} from "antd";
 
 import type { MenuProps } from 'antd';
 
+import logo from "../../img/menu/logo.svg";
+
 import eye from "../../img/menu/eye.svg";
 import like from "../../img/menu/like.svg";
 import compare from "../../img/menu/compare.svg";
 import cart from "../../img/menu/cart.svg";
-import sign_in from "../../img/menu/sign-in.svg";
 import menu_icon from "../../img/menu-icon.svg";
 
 import hoverboard from "../../img/catalog/hoverboard.svg"
@@ -95,7 +96,9 @@ const Header = () => {
         <header className="flex flex-col w-full h-32 max-xl:h-auto bg-white">
             <div className="grid grid-rows-2 w-full h-full max-xl:h-auto">
                 <div className="grid grid-cols-[25%_75%] w-4/5 mx-auto max-xl:w-11/12 max-md:grid-cols-2">
-                    <AuthManager/>
+                    <Link href="/" className="flex flex-row items-center">
+                        <Image src={logo} alt="logo" className="h-16 w-40 max-md:w-40 max-md:h-14"/>
+                    </Link>
                     <div className="flex flex-row items-center justify-between text-black max-[1440px]:justify-end max-[1440px]:gap-12">
                         <div className="flex flex-row items-center gap-4 max-[1440px]:hidden">
                             <p className="text-base">+7 (812) 660-50-54</p>
@@ -109,7 +112,7 @@ const Header = () => {
                             <Image src={compare} alt="compare" className="h-12 w-12"/>
                             <Image src={cart} alt="cart" className="h-12 w-12"/>
                         </div>
-                        <Image src={sign_in} alt="sign_in" className="h-12 w-12 flex justify-end"/>
+                        <AuthManager/>
                     </div>
                 </div>
                 <div className="bg-menu-blue max-md:hidden">

@@ -1,15 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Modal } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, Modal } from 'antd';
 
 import Image from "next/image";
 import Link from "next/link";
 
-import logo from "../../img/menu/logo.svg";
-
+import sign_in from "../../img/menu/sign-in.svg";
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 
 const AuthManager = () => {
+
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector((state: { auth: { isAuthenticated: boolean } }) => state.auth.isAuthenticated);
 
     const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
     const [isModalLoginOpen, setIsModalLoginOpen] = useState(false);
@@ -26,9 +31,19 @@ const AuthManager = () => {
 
     return (
         <div>
-            <Link href="/" className="flex flex-row items-center">
-                <Image src={logo} alt="logo" className="h-16 w-40 max-md:w-40 max-md:h-14"/>
-            </Link>
+            {isAuthenticated ? (<Image src={sign_in} alt="sign_in" className="h-12 w-12 flex justify-end"/>
+            ) : (
+                <Button className="flex justify-end" onClick={showModalLogin}>Войти</Button>
+            )}
+
+            <Modal open={isModalLoginOpen} onCancel={() => setIsModalLoginOpen(false)} footer={null}>
+                <LoginForm></LoginForm>
+                <Button className="flex justify-end" onClick={showModalRegister}>Регистрация</Button>
+            </Modal>
+
+            <Modal open={isModalRegisterOpen} onCancel={() => setIsModalRegisterOpen(false)} footer={null}>
+                <RegisterForm></RegisterForm>
+            </Modal>
         </div>
     );
 }
