@@ -1,0 +1,6 @@
+.custom-drawer .ant-drawer-header {
+    flex-direction: row-reverse;
+}
+.custom-drawer .ant-drawer-header-title {
+    flex-direction: row-reverse;
+}
