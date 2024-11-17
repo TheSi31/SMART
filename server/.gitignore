@@ -6,5 +6,23 @@
 .pnp.js
 .yarn/install-state.gz
 
+<<<<<<< HEAD
+=======
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+>>>>>>> 6c4c30c778258613fbe4164c7fe62f939fd9c8d4
 # local env files
 .env*.local
