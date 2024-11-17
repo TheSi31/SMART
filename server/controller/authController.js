@@ -1,4 +1,3 @@
-// authController.js
 const pool = require('./../db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -19,7 +18,7 @@ const registerUser = async (req, res) => {
       expiresIn: '1h',
     });
 
-    res.status(201).json({ token, user: newUser.rows[0] });
+    res.status(201).json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error registering user' });

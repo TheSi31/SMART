@@ -1,7 +1,12 @@
-// RegisterForm.js
+
 import React, { useState } from 'react';
+import Link from 'next/link'; 
+
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../store/slice/authSlice';
+
+import { LockOutlined } from '@ant-design/icons';
+import { Input } from 'antd';
 
 const RegisterForm = () => {
     const dispatch = useDispatch();
@@ -20,40 +25,42 @@ const RegisterForm = () => {
 
     return (
         <div>
-            <h2>Регистрация</h2>
-            <form onSubmit={handleRegister} className="flex flex-col space-y-4">
-                <input
-                    type="text"
-                    placeholder="Имя пользователя"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    className="input-field"
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="input-field"
-                />
-                <input
-                    type="tel"
-                    placeholder="Номер телефона"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="input-field"
-                />
-                <input
-                    type="password"
-                    placeholder="Пароль"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="input-field"
-                />
-                <button type="submit" className="btn-primary">Зарегистрироваться</button>
+            <form onSubmit={handleRegister} className="flex flex-col gap-5">
+                <div className="flex flex-col gap-2">
+                    <label>Имя</label>
+                    <Input
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <label>Эл. почта</label>
+                    <Input
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <label>Номер телефона</label>
+                    <Input
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <label>Придумайте пароль</label>
+                    <Input.Password
+                        value={password}
+                        prefix={<LockOutlined />}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <label>Регистрируясь, вы соглашаетесь с<Link href="#"> пользовательским соглашением</Link></label>
+                <button className='bg-menu-dark-blue text-white py-2 px-4 rounded' type="submit">Зарегистрироваться</button>
             </form>
 
             {registrationStatus === 'loading' && <p>Загрузка...</p>}

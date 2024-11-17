@@ -5,6 +5,8 @@ import "./Header_menu_md.css";
 import Image from "next/image";
 import Link from "next/link";
 
+import type { MenuProps } from 'antd';
+
 import { CloseOutlined } from '@ant-design/icons';
 
 import home from "../../img/menu-md/home.svg";
@@ -12,9 +14,9 @@ import catalog from "../../img/menu-md/catalog.svg";
 import cart from "../../img/menu-md/cart.svg";
 import search from "../../img/menu-md/search.svg";
 import more from "../../img/menu-md/more.svg";
-import { Drawer } from 'antd';
+import { Drawer, Input } from 'antd';
 
-const Header_menu_md = () => {
+const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items']}) => {
 
     const [openCatalog, serOpenCatalog] = useState(false);
     const [openCart, serOpenCart] = useState(false);
@@ -94,7 +96,15 @@ const Header_menu_md = () => {
             </div>
             <Drawer open={openCatalog} onClose={() => serOpenCatalog(false)} placement="bottom" zIndex={1} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Каталог</h1>}>
-                
+                <div>
+                    <ul className="flex flex-col gap-2">
+                        {antd_items.map((item) => (
+                            <li key={item.key}>
+                                {item.label}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </Drawer>
             <Drawer open={openCart} onClose={() => serOpenCart(false)} placement="bottom" zIndex={1} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Корзина</h1>}>
@@ -102,11 +112,32 @@ const Header_menu_md = () => {
             </Drawer>
             <Drawer open={openSearch} onClose={() => serOpenSearch(false)} placement="bottom" zIndex={1} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Поиск</h1>}>
-                <h1>Поиск</h1>
+                <Input placeholder="Поиск" className="w-full" />
             </Drawer>
             <Drawer open={openMore} onClose={() => serOpenMore(false)} placement="bottom" zIndex={1} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Еще</h1>}>
-                <h1>Еще</h1>
+                <div>
+                    <ul className="flex flex-col m-4 font-medium">
+                        <li className="flex items-center py-4 border-b border-b-[#C8CACB] cursor-pointer hover:text-xl hover:border-b-[#868889] transition-all duration-300 ease-out">
+                            <Link href="/about">О компании</Link>
+                        </li>
+                        <li className="flex items-center py-4 border-b border-b-[#C8CACB] cursor-pointer hover:text-xl hover:border-b-[#868889] transition-all duration-300 ease-out">
+                            <Link href="/promotions">Акции</Link>
+                        </li>
+                        <li className="flex items-center py-4 border-b border-b-[#C8CACB] cursor-pointer hover:text-xl hover:border-b-[#868889] transition-all duration-300 ease-out">
+                            <Link href="/installment">Рассрочка 0|0|18</Link>
+                        </li>
+                        <li className="flex items-center py-4 border-b border-b-[#C8CACB] cursor-pointer hover:text-xl hover:border-b-[#868889] transition-all duration-300 ease-out">
+                            <Link href="/service">Сервис и гарантия</Link>
+                        </li>
+                        <li className="flex items-center py-4 border-b border-b-[#C8CACB] cursor-pointer hover:text-xl hover:border-b-[#868889] transition-all duration-300 ease-out">
+                            <Link href="/wholesale">Опт/дропшиппинг</Link>
+                        </li>
+                        <li className="flex items-center py-4 border-b border-b-[#C8CACB] cursor-pointer hover:text-xl hover:border-b-[#868889] transition-all duration-300 ease-out">
+                            <Link href="/contacts">Контакты</Link>
+                        </li>
+                    </ul>
+                </div>
             </Drawer>
         </div>
     );

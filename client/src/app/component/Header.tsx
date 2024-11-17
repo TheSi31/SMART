@@ -23,7 +23,7 @@ import smart_toys from "../../img/catalog/smart-toys.svg"
 import smart_watch from "../../img/catalog/smart-watch.svg"
 
 import Link from "next/link";
-import SearchInput from "./SearchInput";
+import SearchButton from "./SearchButton";
 import Header_menu_md from "./Header_menu_md";
 import AuthManager from "./AuthManager";
 
@@ -49,7 +49,7 @@ const menu_items: MenuProps['items'] = [
     {
         key: '4',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={segways} alt="segways"></Image>Сегвеи и мини-сегвеи</Link>
+            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={segways} alt="segways"></Image>Сигвеи и мини-сигвеи</Link>
         )
     },
     {
@@ -94,7 +94,7 @@ const menu_items: MenuProps['items'] = [
 const Header = () => {
     return (
         <header className="flex flex-col w-full h-32 max-xl:h-auto bg-white">
-            <div className="grid grid-rows-2 w-full h-full max-xl:h-auto">
+            <div className="grid grid-rows-2 w-full h-full max-xl:h-auto max-md:grid-rows-1">
                 <div className="grid grid-cols-[25%_75%] w-4/5 mx-auto max-xl:w-11/12 max-md:grid-cols-2">
                     <Link href="/" className="flex flex-row items-center">
                         <Image src={logo} alt="logo" className="h-16 w-40 max-md:w-40 max-md:h-14"/>
@@ -106,7 +106,7 @@ const Header = () => {
                             <p className="text-[#838688]">Пн-вс: с 10:00 до 21:00</p>
                         </div>
                         <div className="flex flex-row items-center max-md:hidden">
-                            <SearchInput/>
+                            <SearchButton/>
                             <Image src={eye} alt="eye" className="h-12 w-12"/>
                             <Image src={like} alt="like" className="h-12 w-12"/>
                             <Image src={compare} alt="compare" className="h-12 w-12"/>
@@ -158,7 +158,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-                <Header_menu_md/>
+                <Header_menu_md menu_items={menu_items}/>
             </div>
         </header>
     );

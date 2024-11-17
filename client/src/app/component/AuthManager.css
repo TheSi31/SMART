@@ -1,0 +1,13 @@
+.ant-modal-wrap .modal-custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important; 
+}
+
+.custom-drawer-auth .ant-drawer-header-title {
+    flex-direction: row-reverse !important;
+}
+
