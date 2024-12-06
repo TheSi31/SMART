@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import "./Header_menu_md.css";
 
@@ -9,11 +10,11 @@ import type { MenuProps } from 'antd';
 
 import { CloseOutlined } from '@ant-design/icons';
 
-import home from "../../img/menu-md/home.svg";
-import catalog from "../../img/menu-md/catalog.svg";
-import cart from "../../img/menu-md/cart.svg";
-import search from "../../img/menu-md/search.svg";
-import more from "../../img/menu-md/more.svg";
+import home from "../img/menu-md/home.svg";
+import catalog from "../img/menu-md/catalog.svg";
+import cart from "../img/menu-md/cart.svg";
+import search from "../img/menu-md/search.svg";
+import more from "../img/menu-md/more.svg";
 import { Drawer, Input } from 'antd';
 
 const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items']}) => {
@@ -59,7 +60,7 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
     }
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 w-full h-16 bg-menu-dark-blue p-4 max-sm:p-2 z-10">
+        <div className="md:hidden fixed bottom-0 left-0 w-full h-16 bg-menu-dark-blue p-4 max-sm:p-2 z-[101]">
             <div className="flex justify-center items-center w-full h-full">
                 <ul className="flex flex-row w-4/5 max-sm:w-full justify-between text-white">
                     <li>
@@ -94,7 +95,7 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
                     </li>
                 </ul>
             </div>
-            <Drawer open={openCatalog} onClose={() => serOpenCatalog(false)} placement="bottom" zIndex={1} 
+            <Drawer open={openCatalog} onClose={() => serOpenCatalog(false)} placement="bottom" zIndex={100} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Каталог</h1>}>
                 <div>
                     <ul className="flex flex-col gap-2">
@@ -106,15 +107,15 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
                     </ul>
                 </div>
             </Drawer>
-            <Drawer open={openCart} onClose={() => serOpenCart(false)} placement="bottom" zIndex={1} 
+            <Drawer open={openCart} onClose={() => serOpenCart(false)} placement="bottom" zIndex={100} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Корзина</h1>}>
                 <h1>Корзина</h1>
             </Drawer>
-            <Drawer open={openSearch} onClose={() => serOpenSearch(false)} placement="bottom" zIndex={1} 
+            <Drawer open={openSearch} onClose={() => serOpenSearch(false)} placement="bottom" zIndex={100} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Поиск</h1>}>
                 <Input placeholder="Поиск" className="w-full" />
             </Drawer>
-            <Drawer open={openMore} onClose={() => serOpenMore(false)} placement="bottom" zIndex={1} 
+            <Drawer open={openMore} onClose={() => serOpenMore(false)} placement="bottom" zIndex={100} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Еще</h1>}>
                 <div>
                     <ul className="flex flex-col m-4 font-medium">

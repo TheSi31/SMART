@@ -1,10 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Card from './Card';
 
 interface Products {
     id: number,
-    catalog: string,
+    categories: string,
     name: string,
     price: number,
     old_price: number,
@@ -15,16 +16,14 @@ interface Products {
 }
 
 
-const List_Products = () => {
+const List_Products = ({category, className}: {category: string|number|undefined, className?: string}) => {
 
     const [products, setProducts] = useState<Products[]>([]);
     
     const fetchProducts = async () => {
         try {
-            const response = await fetch('http://localhost:3001/products');
+            const response = await fetch('http://localhost:3001/products/categories/' + category);
             const data = await response.json();
-
-
             setProducts(data);
         } catch (error) {
             console.error(error);
@@ -36,11 +35,14 @@ const List_Products = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Список продуктов</h1>
-            {products.map((product) => (
-                <Card key={product.id} {...product} />
-            ))}
+        <div className={className}>
+                <div className='flex flex-wrap max-md:justify-center'>
+                    {products.map((product) => (
+                        <Link href={`/catalog/product/${product.id}`}>
+                            <Card key={product.id} {...product} />
+                        </Link>
+                    ))}
+                </div>
         </div>
     );
 }

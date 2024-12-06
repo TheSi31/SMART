@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { Button, ConfigProvider, Drawer, Input } from 'antd';
 import Image from 'next/image';
-import search from "../../img/menu/search-icon.svg";
+import search from "../img/menu/search-icon.svg";
 import { CloseOutlined } from '@ant-design/icons';
 
 import './SearchButton.css';

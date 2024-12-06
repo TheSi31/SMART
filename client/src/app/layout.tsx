@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "./component/Header";
-import ReduxProvider from "./component/ReduxProvider";
+import Header from "../component/Header";
+import ReduxProvider from "../component/ReduxProvider";
+import Footer from "../component/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,13 +27,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-inter font-light`}
       >
       <ReduxProvider>
         <Header></Header>
         {children}
+        <Footer></Footer>
       </ReduxProvider>
       </body>
     </html>

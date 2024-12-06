@@ -1,0 +1,16 @@
+.custom-tabs .ant-tabs-nav{
+    padding-left: 0px !important;
+}
+.custom-tabs .ant-tabs-nav::before, .custom-tabs .ant-tabs-nav::after{
+    z-index: -1;
+    content: '';
+    height: 57px;
+    width: 300px;
+    background-color: #EDF2F6;
+}
+.ant-tabs-nav::after{
+    margin-right: -200px;
+}
+.ant-tabs-nav::before{
+    margin-left: -200px;
+}

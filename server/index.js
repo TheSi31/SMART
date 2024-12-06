@@ -4,9 +4,9 @@ const app = express();
 
 const { registerUser, getUsers, getUserProfile, loginUser } = require('./controller/authController');
 
-const { getProducts, getProductById, getProductsByCatalogId } = require('./controller/productController');
+const { getProducts, getProductById, getProductsByCategoriesId, getProductsByIdMore } = require('./controller/productController');
 
-const { getCatalog, getCatalogById } = require('./controller/catalogController');
+const { getCategory, getCategoryById } = require('./controller/categoryController');
 
 // Разрешаем CORS для всех запросов
 app.use(cors({
@@ -38,17 +38,20 @@ app.get('/products', getProducts);
 // Маршрут для получения продукта по ID
 app.get('/products/:id', getProductById);
 
-// Маршрут для получения продуктов по ID каталога
-app.get('/products/catalog/:catalogId', getProductsByCatalogId);
+// Маршрут для получения продуктов по ID категории
+app.get('/products/categories/:categoriesId', getProductsByCategoriesId);
+
+// Маршрут для получения подробностей о продукте по ID продукта
+app.get('/products/:id/more', getProductsByIdMore);
 
 
 
 
-// Маршрут для получения списка каталогов
-app.get('/catalog', getCatalog);
+// Маршрут для получения списка категорий
+app.get('/category', getCategory);
 
-// Маршрут для получения каталога по ID
-app.get('/catalog/:id', getCatalogById);
+// Маршрут для получения категории по ID
+app.get('/catalog/:id', getCategoryById);
 
 // Запуск сервера
 const PORT = 3001;

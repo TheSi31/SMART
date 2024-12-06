@@ -10,7 +10,7 @@ import './AuthManager.css';
 import Image from "next/image";
 import Link from "next/link";
 
-import sign_in from "../../img/menu/sign-in.svg";
+import sign_in from "../img/menu/sign-in.svg";
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 
@@ -87,7 +87,7 @@ const AuthManager = () => {
         {
             key: '6',
             label: (
-                <Link href="/" onClick={() => dispatch({ type: 'auth/logout' })} className="font-medium">Выйти</Link>
+                <Link href="" onClick={() => dispatch({ type: 'auth/logout' })} className="font-medium">Выйти</Link>
             ),
             danger: true
         }
@@ -119,7 +119,7 @@ const AuthManager = () => {
                 },
             }}
             >
-                {isMobile ?(
+                {isMobile ? (
                     <>
                         <Drawer className='custom-drawer-auth' open={isModalLoginOpen} title="Войти" placement="bottom" 
                         height={'416px'} closeIcon={<CloseOutlined style={{ color: "red" }} />} onClose={() => setIsModalLoginOpen(false)}>

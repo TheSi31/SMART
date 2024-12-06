@@ -3,24 +3,24 @@ import { Dropdown, ConfigProvider} from "antd";
 
 import type { MenuProps } from 'antd';
 
-import logo from "../../img/menu/logo.svg";
+import logo from "../img/menu/logo.svg";
 
-import eye from "../../img/menu/eye.svg";
-import like from "../../img/menu/like.svg";
-import compare from "../../img/menu/compare.svg";
-import cart from "../../img/menu/cart.svg";
-import menu_icon from "../../img/menu-icon.svg";
+import eye from "../img/menu/eye.svg";
+import like from "../img/menu/like.svg";
+import compare from "../img/menu/compare.svg";
+import cart from "../img/menu/cart.svg";
+import menu_icon from "../img/menu-icon.svg";
 
-import hoverboard from "../../img/catalog/hoverboard.svg"
-import samokats from "../../img/catalog/samokats.svg"
-import unicycle from "../../img/catalog/unicycle.svg"
-import segways from "../../img/catalog/segways.svg"
-import scooters from "../../img/catalog/scooters.svg"
-import bike from "../../img/catalog/bike.svg"
-import cars from "../../img/catalog/cars.svg"
-import accessories from "../../img/catalog/accessories.svg"
-import smart_toys from "../../img/catalog/smart-toys.svg"
-import smart_watch from "../../img/catalog/smart-watch.svg"
+import hoverboard from "../img/catalog/hoverboard.svg"
+import samokats from "../img/catalog/samokats.svg"
+import unicycle from "../img/catalog/unicycle.svg"
+import segways from "../img/catalog/segways.svg"
+import scooters from "../img/catalog/scooters.svg"
+import bike from "../img/catalog/bike.svg"
+import cars from "../img/catalog/cars.svg"
+import accessories from "../img/catalog/accessories.svg"
+import smart_toys from "../img/catalog/smart-toys.svg"
+import smart_watch from "../img/catalog/smart-watch.svg"
 
 import Link from "next/link";
 import SearchButton from "./SearchButton";

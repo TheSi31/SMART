@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Checkbox, Input } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../store/slice/authSlice';
+import { loginUser } from '../store/slice/authSlice';
 
 import { LockOutlined } from '@ant-design/icons';
 

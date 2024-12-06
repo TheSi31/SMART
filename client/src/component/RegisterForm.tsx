@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Link from 'next/link'; 
 
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../../store/slice/authSlice';
+import { registerUser } from '../store/slice/authSlice';
 
 import { LockOutlined } from '@ant-design/icons';
 import { Input } from 'antd';

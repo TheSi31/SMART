@@ -1,12 +1,14 @@
 const pool = require('./../db');
-const iconv = require('iconv-lite');
+
+const transformEncoding = require('../transformEncoding');
 
 const getProducts = async (req, res) => {
     try {
         const query = `
             SELECT 
-                p.id, 
-                c.name AS catalog, 
+                p.id,
+                p.categories_id, 
+                c.name AS categories, 
                 p.name, 
                 p.price, 
                 p.old_price, 
@@ -15,27 +17,12 @@ const getProducts = async (req, res) => {
                 p.image_url, 
                 p.description
             FROM products p
-            JOIN catalogs c ON p.catalog_id = c.id;
+            JOIN categories c ON p.categories_id = c.id;
         `;
 
         const products = await pool.query(query);
 
-        const transformedRows = products.rows.map(row => {
-            const transformedRow = {};
-
-            for (const [key, value] of Object.entries(row)) {
-                if (typeof value === 'string') {
-                    // Преобразование из UTF-8 в windows-1251
-                    const windows1251Text = iconv.encode(value, 'windows-1251');
-                    // Преобразование из windows-1251 в CP866
-                    transformedRow[key] = iconv.decode(windows1251Text, 'cp866');
-                } else {
-                    transformedRow[key] = value;
-                }
-            }
-
-            return transformedRow;
-        });
+        const transformedRows = transformEncoding(products.rows);
 
         res.status(200).json(transformedRows);
     } catch (error) {
@@ -48,8 +35,9 @@ const getProductById = async (req, res) => {
     try {
         const query = `
             SELECT 
-                p.id, 
-                c.name AS catalog, 
+                p.id,
+                p.categories_id, 
+                c.name AS categories, 
                 p.name, 
                 p.price, 
                 p.old_price, 
@@ -58,28 +46,13 @@ const getProductById = async (req, res) => {
                 p.image_url, 
                 p.description
             FROM products p
-            JOIN catalogs c ON p.catalog_id = c.id
+            JOIN categories c ON p.categories_id = c.id
             WHERE p.id = $1;
         `;
 
         const product = await pool.query(query, [req.params.id]);
 
-        const transformedRows = product.rows.map(row => {
-            const transformedRow = {};
-
-            for (const [key, value] of Object.entries(row)) {
-                if (typeof value === 'string') {
-                    // Преобразование из UTF-8 в windows-1251
-                    const windows1251Text = iconv.encode(value, 'windows-1251');
-                    // Преобразование из windows-1251 в CP866
-                    transformedRow[key] = iconv.decode(windows1251Text, 'cp866');
-                } else {
-                    transformedRow[key] = value;
-                }
-            }
-
-            return transformedRow;
-        });
+        const transformedRows = transformEncoding(product.rows);
 
         res.status(200).json(transformedRows);
     } catch (error) {
@@ -88,33 +61,101 @@ const getProductById = async (req, res) => {
     }
 };
 
-const getProductsByCatalogId = async (req, res) => {
+const getProductsByCategoriesId = async (req, res) => {
     try {
-        const catalogId = req.params.catalogId;
-        const products = await pool.query('SELECT * FROM products WHERE catalog_id = $1;', [catalogId]);
+        const categoriesId = req.params.categoriesId;
 
-        const transformedRows = products.rows.map(row => {
-            const transformedRow = {};
+        if (categoriesId == "-1"){
+            const products = await pool.query(`
+                SELECT 
+                    p.id, 
+                    c.name AS categories, 
+                    p.name, 
+                    p.price, 
+                    p.old_price, 
+                    p.is_new, 
+                    p.is_best_seller, 
+                    p.image_url, 
+                    p.description
+                FROM products p
+                JOIN categories c ON p.categories_id = c.id
+                ORDER BY p.is_new DESC;
+            `);
 
-            for (const [key, value] of Object.entries(row)) {
-                if (typeof value === 'string') {
-                    // Преобразование из UTF-8 в windows-1251
-                    const windows1251Text = iconv.encode(value, 'windows-1251');
-                    // Преобразование из windows-1251 в CP866
-                    transformedRow[key] = iconv.decode(windows1251Text, 'cp866');
-                } else {
-                    transformedRow[key] = value;
-                }
-            }
+            const transformedRows = transformEncoding(products.rows);
 
-            return transformedRow;
-        });
+            res.status(200).json(transformedRows);
+        } else if(categoriesId == "-2"){
+            const products = await pool.query(`
+                SELECT 
+                    p.id, 
+                    c.name AS categories, 
+                    p.name, 
+                    p.price, 
+                    p.old_price, 
+                    p.is_new, 
+                    p.is_best_seller, 
+                    p.image_url, 
+                    p.description
+                FROM products p
+                JOIN categories c ON p.categories_id = c.id
+                ORDER BY p.is_best_seller DESC;
+            `);
+
+            const transformedRows = transformEncoding(products.rows);
+
+            res.status(200).json(transformedRows);
+        } else {
+            const products = await pool.query(`
+                SELECT 
+                    p.id,
+                    p.categories_id, 
+                    c.name AS categories, 
+                    p.name, 
+                    p.price, 
+                    p.old_price, 
+                    p.is_new, 
+                    p.is_best_seller, 
+                    p.image_url, 
+                    p.description
+                FROM products p
+                JOIN categories c ON p.categories_id = c.id
+                WHERE c.id = $1;
+            `, [categoriesId]);
+
+            const transformedRows = transformEncoding(products.rows);
+
+            res.status(200).json(transformedRows);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error getting products by categories id' });
+    }
+};
+
+const getProductsByIdMore = async (req, res) => {
+    try {
+        const products = await pool.query(`
+            SELECT 
+                ct.name,
+                pc.value
+            FROM 
+                product_characteristics pc
+            JOIN 
+                characteristics_templates ct 
+            ON 
+                pc.template_id = ct.id
+            WHERE 
+                pc.product_id = $1;
+        `, [req.params.id]);
+
+        const transformedRows = transformEncoding(products.rows);
 
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting products by catalog id' });
+        res.status(500).json({ message: 'Error getting products by id more' });
     }
 };
 
-module.exports = { getProducts, getProductById, getProductsByCatalogId };
+module.exports = { getProducts, getProductById, getProductsByCategoriesId, getProductsByIdMore };
