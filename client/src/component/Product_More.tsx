@@ -1,15 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Breadcrumb, Button, ConfigProvider, Rate, Tabs, Avatar } from 'antd';
+import { Breadcrumb, Button, ConfigProvider, Rate, Tabs, Avatar, Modal, Form, Input } from 'antd';
 import Link from 'next/link';
 import Image from 'next/image';
+import LikeButton from './LikeButton';
 
-import image from "../../img/test.png";
+import image from "../img/test.png";
 import { UserOutlined } from '@ant-design/icons';
 
-import comment from "../../img/commet.svg";
-import like from "../../img/menu/like.svg";
-import compare from "../../img/menu/compare.svg";
+import comment from "../img/commet.svg";
+import compare from "../img/menu/compare.svg";
 
 import './Product_More.css';
 
@@ -35,6 +35,17 @@ const Product_More = ({id}:{id: number}) => {
 
     const [products, setProducts] = useState<Products[]>([]);
     const [productsMore, setProductsMore] = useState<ProductsMore[]>();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const 
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
     
     const fetchProducts = async () => {
         try {
@@ -87,8 +98,8 @@ const Product_More = ({id}:{id: number}) => {
                                 </div>
                             </div>
                             <div className="sm:hidden flex gap-3">
-                                <div className='w-12 h-12 border border-gray-200 rounded-md sm:hidden'>
-                                    <Image src={like} alt="like" />
+                                <div className='w-12 h-12 sm:hidden'>
+                                    <LikeButton productId={product?.id}/>
                                 </div>
                                 <div className='w-12 h-12 border border-gray-200 rounded-md sm:hidden'>
                                     <Image src={compare} alt="compare" />
@@ -100,8 +111,8 @@ const Product_More = ({id}:{id: number}) => {
                             </div>
                         </div>
                         <div className='grid grid-rows-[48px_48px] max-sm:grid-rows-[48px] max-[380px]:grid-rows-[48px_48px] grid-cols-[48px_48px_48px_48px_48px_48px_48px_48px] max-md:grid-cols-6 max-sm:grid-cols-8 gap-[10px]'>
-                            <div className="col-start-7 border border-gray-200 rounded-md max-sm:hidden">
-                                <Image src={like} alt="like" />
+                            <div className="col-start-7 max-sm:hidden">
+                                <LikeButton productId={product?.id}/>
                             </div>
                             <div className="col-start-8 border border-gray-200 rounded-md max-sm:hidden">
                                 <Image src={compare} alt="compare" />
@@ -178,12 +189,31 @@ const Product_More = ({id}:{id: number}) => {
                                 <p>Сделайте выбор других покупалетей легче</p>
                             </div>
                             <ConfigProvider theme={{ token: { colorPrimary: "#2A5275",colorPrimaryHover: "#1d3b54", } }}>
-                                <Button type="primary" className='h-12 w-1/2'>Написать отзыв</Button>
+                                <Button  type="primary" className='h-12 w-1/2' onClick={showModal}>Написать отзыв</Button>
                             </ConfigProvider>
                         </div>
                     </div>
                 </Tabs.TabPane>
             </Tabs>
+            <Modal open={isModalOpen} onOk={closeModal} onCancel={closeModal}>
+                <Form>
+                    <Form.Item>
+                        <h2 className="text-2xl font-semibold">Написать отзыв</h2>
+                    </Form.Item>
+                    <Form.Item>
+                        <div className="flex flex-col gap-2">
+                            <label className="font-normal">Ваша оценка</label>
+                            <Rate defaultValue={3} />
+                        </div>
+                    </Form.Item>
+                    <Form.Item>
+                        <div className="flex flex-col gap-2">
+                            <label className="font-normal">Ваш отзыв</label>
+                            <Input size="large" type="text" />
+                        </div>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 }

@@ -12,7 +12,7 @@ const page = ({params}:any) => {
             <Product_More id={id} />
             <div className="flex flex-col gap-10">
                 <h2 className="text-2xl font-bold">Рекомендуем</h2>
-                <List_Products category={1}></List_Products>
+                <List_Products categories={1}></List_Products>
             </div>
         </main>
     );

@@ -31,61 +31,61 @@ const menu_items: MenuProps['items'] = [
     {
         key: '1',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={hoverboard} alt="hoverboard"></Image>Гироскутеры</Link>
+            <Link href="/catalog/categories/1" className="flex flex-row items-center gap-4 font-medium"><Image src={hoverboard} alt="hoverboard"></Image>Гироскутеры</Link>
         )
     },
     {
         key: '2',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={samokats} alt="samokats"></Image>Электросамокаты</Link>
+            <Link href="/catalog/categories/2" className="flex flex-row items-center gap-4 font-medium"><Image src={samokats} alt="samokats"></Image>Электросамокаты</Link>
         )
     },
     {
         key: '3',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={unicycle} alt="unicycle"></Image>Моноколеса</Link>
+            <Link href="/catalog/categories/3" className="flex flex-row items-center gap-4 font-medium"><Image src={unicycle} alt="unicycle"></Image>Моноколеса</Link>
         )   
     },
     {
         key: '4',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={segways} alt="segways"></Image>Сигвеи и мини-сигвеи</Link>
+            <Link href="/catalog/categories/4" className="flex flex-row items-center gap-4 font-medium"><Image src={segways} alt="segways"></Image>Сигвеи и мини-сигвеи</Link>
         )
     },
     {
         key: '5',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={scooters} alt="scooters"></Image>Электроскутеры</Link>
+            <Link href="/catalog/categories/5" className="flex flex-row items-center gap-4 font-medium"><Image src={scooters} alt="scooters"></Image>Электроскутеры</Link>
         )
     },
     {
         key: '6',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={bike} alt="bike"></Image>Электровелосипеды</Link>
+            <Link href="/catalog/categories/6" className="flex flex-row items-center gap-4 font-medium"><Image src={bike} alt="bike"></Image>Электровелосипеды</Link>
         )
     },
     {
         key: '7',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={cars} alt="cars"></Image>Электромобили</Link>
+            <Link href="/catalog/categories/7" className="flex flex-row items-center gap-4 font-medium"><Image src={cars} alt="cars"></Image>Электромобили</Link>
         )
     },
     {
         key: '8',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={accessories} alt="accessories"></Image>Аксессуары</Link>
+            <Link href="/catalog/categories/8" className="flex flex-row items-center gap-4 font-medium"><Image src={accessories} alt="accessories"></Image>Аксессуары</Link>
         )
     },
     {
         key: '9',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={smart_toys} alt="smart_toys"></Image>Умные игрушки</Link>
+            <Link href="/catalog/categories/9" className="flex flex-row items-center gap-4 font-medium"><Image src={smart_toys} alt="smart_toys"></Image>Умные игрушки</Link>
         )
     },
     {
         key: '10',
         label: (
-            <Link href="#" className="flex flex-row items-center gap-4 font-medium"><Image src={smart_watch} alt="smart_watch"></Image>Smart Watch</Link>
+            <Link href="/catalog/categories/10" className="flex flex-row items-center gap-4 font-medium"><Image src={smart_watch} alt="smart_watch"></Image>Smart Watch</Link>
         )
     }
 ]
@@ -95,7 +95,7 @@ const Header = () => {
     return (
         <header className="flex flex-col w-full h-32 max-xl:h-auto bg-white">
             <div className="grid grid-rows-2 w-full h-full max-xl:h-auto max-md:grid-rows-1">
-                <div className="grid grid-cols-[25%_75%] w-4/5 mx-auto max-xl:w-11/12 max-md:grid-cols-2">
+                <div className="grid grid-cols-[25%_75%] w-10/12 mx-auto max-xl:w-11/12 max-md:grid-cols-2">
                     <Link href="/" className="flex flex-row items-center">
                         <Image src={logo} alt="logo" className="h-16 w-40 max-md:w-40 max-md:h-14"/>
                     </Link>
@@ -108,15 +108,19 @@ const Header = () => {
                         <div className="flex flex-row items-center max-md:hidden">
                             <SearchButton/>
                             <Image src={eye} alt="eye" className="h-12 w-12"/>
-                            <Image src={like} alt="like" className="h-12 w-12"/>
+                            <Link href="/favorites">
+                                <Image src={like} alt="like" className="h-12 w-12"/>
+                            </Link>
                             <Image src={compare} alt="compare" className="h-12 w-12"/>
-                            <Image src={cart} alt="cart" className="h-12 w-12"/>
+                            <Link href="/cart">
+                                <Image src={cart} alt="cart" className="h-12 w-12"/>
+                            </Link>
                         </div>
                         <AuthManager/>
                     </div>
                 </div>
                 <div className="bg-menu-blue max-md:hidden">
-                    <div className="grid grid-cols-[25%_75%] w-4/5 max-xl:w-11/12 h-full mx-auto">
+                    <div className="grid grid-cols-[25%_75%] w-10/12 max-xl:w-11/12 h-full mx-auto">
                         <div className=" flex flex-row items-center bg-[#243c53] w-full h-full">
                             <ConfigProvider
                                 theme={{
@@ -137,22 +141,34 @@ const Header = () => {
                         <div className="flex flex-row items-center text-white w-full h-full">
                             <ul className="flex flex-row m-4 items-center gap-10 w-full h-full max-[1440px]:gap-4 max-[1440px]: text-sm">
                                 <li className="flex items-center cursor-pointer h-full hover:font-normal transition-all duration-300 ease-out">
-                                    <Link href="/about">О компании</Link>
+                                    <Link className="flex items-center w-full h-full" href="/about">
+                                        <p>О компании</p>
+                                    </Link>
                                 </li>
                                 <li className="flex items-center cursor-pointer h-full hover:font-normal transition-all duration-300 ease-out">
-                                    <Link href="/promotions">Акции</Link>
+                                    <Link className="flex items-center w-full h-full" href="/promotions">
+                                        <p>Акции</p>
+                                    </Link>
                                 </li>
                                 <li className="flex items-center cursor-pointer h-full hover:font-normal transition-all duration-300 ease-out">
-                                    <Link href="/installment">Рассрочка 0|0|18</Link>
+                                    <Link className="flex items-center w-full h-full" href="/installment">
+                                        <p>Рассрочка 0|0|18</p>
+                                    </Link>
                                 </li>
                                 <li className="flex items-center cursor-pointer h-full hover:font-normal transition-all duration-300 ease-out">
-                                    <Link href="/service">Сервис и гарантия</Link>
+                                    <Link className="flex items-center w-full h-full" href="/service">
+                                        <p>Сервис и гарантия</p>
+                                    </Link>
                                 </li>
                                 <li className="flex items-center cursor-pointer h-full hover:font-normal transition-all duration-300 ease-out">
-                                    <Link href="/wholesale">Опт/дропшиппинг</Link>
+                                    <Link className="flex items-center w-full h-full" href="/wholesale">
+                                        <p>Опт/дропшиппинг</p>
+                                    </Link>
                                 </li>
                                 <li className="flex items-center cursor-pointer h-full hover:font-normal transition-all duration-300 ease-out">
-                                    <Link href="/contacts">Контакты</Link>
+                                    <Link className="flex items-center w-full h-full" href="/contacts">
+                                        <p>Контакты</p>
+                                    </Link>
                                 </li>
                             </ul>
                         </div>

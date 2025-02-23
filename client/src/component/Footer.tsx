@@ -51,8 +51,8 @@ const Footer = () => {
                     <div className="flex flex-col gap-5">
                         <h1 className="text-xl font-bold text-[#838688]">Сотрудничество</h1>
                         <div className="flex flex-col">
-                            <Link href="#">Оптом</Link>
-                            <Link href="#">Дропшиппинг</Link>
+                            <Link href="/wholesale">Оптом</Link>
+                            <Link href="/dropshipping">Дропшиппинг</Link>
                         </div>
                     </div>
                 </div>

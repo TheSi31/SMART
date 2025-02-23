@@ -1,12 +1,15 @@
 import Image from "next/image";
 
 import image from "../img/test.png";
-import { Button, ConfigProvider, Rate } from "antd";
+import { Button, ConfigProvider, Rate, message } from "antd";
 
 import comment from "../img/commet.svg";
-import like from "../img/menu/like.svg";
 import compare from "../img/menu/compare.svg";
 import cart from "../img/menu/cart.svg";
+
+import { useDispatch } from 'react-redux';
+import { addItem } from '../store/slice/cartSlice';
+import LikeButton from "./LikeButton";
 
 interface CardProps {
     id: number;
@@ -20,9 +23,32 @@ interface CardProps {
     description: string;
 }
 
-const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, image_url, description }: CardProps) => {
+const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, image_url, description, links }: CardProps & { links: string }) => {
+
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const dispatch = useDispatch();
+
+    const success = (message: string = 'Товар добавлен в корзину') => {
+        messageApi.open({
+          type: 'success',
+          content: message,
+        });
+    };
+
+    const handleAddToCart = (event:React.MouseEvent) => {
+        event.stopPropagation();
+        dispatch(addItem({ id: id, name: name, price: price }));
+        success();
+    };
+
+    const handleCardClick = () => {
+        window.location.href = links;
+    };
+
     return (
-        <div className="w-80 max-sm:max-w-72 p-5 relative border border-gray-200">
+        <div className="w-80 max-sm:max-w-72 p-5 relative border border-gray-300 cursor-pointer" onClick={handleCardClick}>
+            {contextHolder}
             {/* Метки Новинка и Хит продаж */}
             <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
                 {is_new && (
@@ -62,9 +88,7 @@ const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, 
                             <h3 className="text-2xl font-medium">{price} ₽</h3>
                         </div>
                     </div>
-                    <div className="col-start-4 border border-gray-200 rounded-md">
-                        <Image src={like} alt="like" />
-                    </div>
+                    <LikeButton productId={id} />
                     <div className="col-start-5 border border-gray-200 rounded-md">
                         <Image src={compare} alt="compare" />
                     </div>
@@ -82,12 +106,12 @@ const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, 
                                 },
                             }}
                         >
-                            <Button variant="outlined" color="primary" className="w-full h-full">
+                            <Button variant="outlined" color="primary" className="w-full h-full z-10">
                                 Купить в 1 клик
                             </Button>
                         </ConfigProvider>
                     </div>
-                    <div className="border border-[#4878A6] bg-[#4878A6] rounded-md">
+                    <div className="border border-[#4878A6] bg-[#4878A6] rounded-md z-10" onClick={handleAddToCart}>
                         <Image src={cart} alt="cart" />
                     </div>
                 </div>
@@ -97,3 +121,4 @@ const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, 
 };
 
 export default Card;
+

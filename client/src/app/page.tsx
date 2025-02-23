@@ -6,7 +6,7 @@ import List_Products from "../component/List_Products";
 export default function Home() {
 
   return (
-    <main className="flex flex-col justify-center gap-20 w-4/5 max-xl:w-11/12 mx-auto">
+    <main className="flex flex-col justify-center gap-20 w-10/12 max-xl:w-11/12 mx-auto">
       <div className="grid grid-cols-[25%_75%] max-lg:grid-cols-1 mt-5">
         <div className="max-lg:hidden"></div>
         <ConfigProvider
@@ -35,7 +35,7 @@ export default function Home() {
             </Carousel>
         </ConfigProvider>
       </div>
-      <List_Products category="-1"/>
+      <List_Products categories="-1"/>
     </main>
   );
 }

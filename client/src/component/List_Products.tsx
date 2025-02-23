@@ -16,13 +16,13 @@ interface Products {
 }
 
 
-const List_Products = ({category, className}: {category: string|number|undefined, className?: string}) => {
+const List_Products = ({categories, className}: {categories: string|number|undefined, className?: string}) => {
 
     const [products, setProducts] = useState<Products[]>([]);
     
     const fetchProducts = async () => {
         try {
-            const response = await fetch('http://localhost:3001/products/categories/' + category);
+            const response = await fetch('http://localhost:3001/products/categories/' + categories);
             const data = await response.json();
             setProducts(data);
         } catch (error) {
@@ -36,11 +36,9 @@ const List_Products = ({category, className}: {category: string|number|undefined
 
     return (
         <div className={className}>
-                <div className='flex flex-wrap max-md:justify-center'>
+                <div className='grid grid-cols-4 max-2xl:grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 justify-items-center'>
                     {products.map((product) => (
-                        <Link href={`/catalog/product/${product.id}`}>
-                            <Card key={product.id} {...product} />
-                        </Link>
+                            <Card key={product.id} {...product} links={`/catalog/product/${product.id}`} />
                     ))}
                 </div>
         </div>

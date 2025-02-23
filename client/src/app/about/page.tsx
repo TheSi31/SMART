@@ -14,7 +14,7 @@ const page = () => {
     return (
         <main className="flex flex-col items-center justify-center gap-10">
             <Breacd items={[{name: "Главная", url: "/"}, {name: "О нас"}]} />
-            <div className="w-4/5 max-lg:w-full max-lg:px-5 flex flex-col gap-10 ">
+            <div className="w-4/5 max-lg:w-full max-lg:px-5 flex flex-col gap-10">
                 <h1 className="text-4xl font-bold">О нас</h1>
                 <p className="text-base font-normal">Официальный представитель производителей эксклюзивного электротранспорта и Смарт-Техники, Созданная в 2015 году 
                     компания Смарт-Техника стала одним из первых дистрибьютеров персонального электротранспорта в России и уже более

@@ -38,13 +38,6 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
         serOpenMore(false);
     }
 
-    const onOpenCart = () => {
-        serOpenCatalog(false);
-        serOpenCart(true);
-        serOpenSearch(false);
-        serOpenMore(false);
-    }
-
     const onOpenSearch = () => {
         serOpenCatalog(false);
         serOpenCart(false);
@@ -76,7 +69,7 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
                         </Link>
                     </li>
                     <li>
-                        <Link href="#" className="flex flex-col items-center" onClick={onOpenCart}>
+                        <Link href="/cart" className="flex flex-col items-center">
                             <Image src={cart} alt="Корзина"></Image>
                             <h1>Корзина</h1>
                         </Link>
@@ -106,10 +99,6 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
                         ))}
                     </ul>
                 </div>
-            </Drawer>
-            <Drawer open={openCart} onClose={() => serOpenCart(false)} placement="bottom" zIndex={100} 
-            height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Корзина</h1>}>
-                <h1>Корзина</h1>
             </Drawer>
             <Drawer open={openSearch} onClose={() => serOpenSearch(false)} placement="bottom" zIndex={100} 
             height={"90vh"} closeIcon={<CloseOutlined style={{ color: "red" }} />} className='custom-drawer' extra={<h1 className='font-bold text-2xl'>Поиск</h1>}>
