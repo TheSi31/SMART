@@ -107,7 +107,9 @@ const Header = () => {
                         </div>
                         <div className="flex flex-row items-center max-md:hidden">
                             <SearchButton/>
-                            <Image src={eye} alt="eye" className="h-12 w-12"/>
+                            <Link href="/viewed">
+                                <Image src={eye} alt="eye" className="h-12 w-12"/>
+                            </Link>
                             <Link href="/favorites">
                                 <Image src={like} alt="like" className="h-12 w-12"/>
                             </Link>

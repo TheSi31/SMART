@@ -2,9 +2,10 @@ import Breacd from "@/component/Breacd";
 import Link from "next/link";
 
 
+
 const page = () => {
     return (
-        <main className="flex flex-col justify-center gap-20 w-4/5 max-xl:w-11/12 mx-auto">
+        <main className="flex flex-col justify-center gap-20 w-10/12 max-xl:w-11/12 mx-auto">
             <Breacd items={[{name: "Главная", url: "/"}, {name: "Каталог"}]}/>
             <h1>Каталог</h1>
             <div className="grid grid-cols-5 grid-rows-[96px_96px] gap-5">

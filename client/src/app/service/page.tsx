@@ -1,7 +1,39 @@
 import Breacd from "@/component/Breacd";
 import { Table } from "antd";
 
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+    title: "Сервисы и гарантия | SMART ТЕХНИКА",
+    description: "Узнайте больше о сервисах и гарантийных обязательствах SMART ТЕХНИКА. Обслуживание и поддержка клиентов на высшем уровне.",
+    robots: "index, follow",
+    openGraph: {
+      title: "Сервисы и гарантия | SMART ТЕХНИКА",
+      description: "SMART ТЕХНИКА предоставляет качественное сервисное обслуживание и надёжные гарантийные обязательства. Ваш комфорт — наша задача.",
+      url: "http://localhost:3000/service",
+      type: "website",
+      images: [
+        {
+          url: "/service-photo.jpg", // Изображение, связанное с ремонтной или гарантийной поддержкой
+          alt: "Сервисное обслуживание SMART ТЕХНИКА",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Сервисы и гарантия | SMART ТЕХНИКА",
+      description: "Узнайте больше о наших сервисах и надёжных гарантиях в SMART ТЕХНИКА.",
+      images: ["/service-photo.jpg"],
+    },
+    alternates: {
+      canonical: "http://localhost:3000/service",
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+  };
+  
 
 const page = () => {
 

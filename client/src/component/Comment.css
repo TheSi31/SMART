@@ -1,0 +1,12 @@
+.ant-carousel .slick-prev, .ant-carousel .slick-next {
+    font-size: 20px;
+    line-height: 1;
+    opacity: 1;
+    color: #000;
+}
+
+.ant-carousel .slick-prev::before, .ant-carousel .slick-next::before {
+    font-size: 30px;
+    opacity: 1;
+    color: #000;
+}

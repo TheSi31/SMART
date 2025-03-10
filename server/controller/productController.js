@@ -156,6 +156,45 @@ const getProductsByIdMore = async (req, res) => {
     }
 };
 
+const getProductByIds = async (req, res) => {
+    try {
+        // Преобразуем строку ids в массив чисел
+        const ids = req.params.ids.split(',').map(Number);
+
+        // Проверяем, переданы ли корректные данные
+        if (!ids || ids.length === 0 || ids.some(isNaN)) {
+            return res.status(400).json({ message: 'Некорректные ids' });
+        }
+
+        // Выполняем запрос к базе данных
+        const products = await pool.query(`
+            SELECT 
+                p.id,
+                p.categories_id, 
+                c.name AS categories, 
+                p.name, 
+                p.price, 
+                p.old_price, 
+                p.is_new, 
+                p.is_best_seller, 
+                p.image_url, 
+                p.description
+            FROM products p
+            JOIN categories c ON p.categories_id = c.id
+            WHERE p.id = ANY($1::int[]);
+        `, [ids]);
+
+        // Преобразуем кодировку, если требуется
+        const transformedRows = transformEncoding(products.rows);
+
+        res.status(200).json(transformedRows);
+    } catch (error) {
+        console.error('Ошибка при получении продуктов:', error);
+        res.status(500).json({ message: 'Ошибка сервера' });
+    }
+};
+
+
 const getMaxPriceByCategories = async (req, res) => {
     try {
         const products = await pool.query(`
@@ -294,6 +333,35 @@ const checkFavorite = async (req, res) => {
     }
 };
 
+const getCommentCount = async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                c.comment,
+                c.rating,
+                COUNT(*) OVER() as count,
+                AVG(c.rating) OVER() as rating
+            FROM comments_ratings c
+            WHERE c.product_id = $1;
+        `, [req.params.productId]);
+
+        const comments = result.rows.map(row => ({
+            comment: row.comment,
+            rating: row.rating
+        }));
+
+        res.status(200).json({
+            comments,
+            count: result.rows[0]?.count || 0,
+            rating: result.rows[0]?.rating || 0
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error getting comments' });
+    }
+};
+
+
 const getCommentByUserId = async (req, res) => {
     try {
         const comments = await pool.query(`
@@ -343,7 +411,18 @@ const getCommentByProductId = async (req, res) => {
 
 const postComment = async (req, res) => {
     try {
-        const { user_id, product_id, comment, rating } = req.body;
+        const { token, product_id, comment, rating } = req.body;
+
+        if (!token) {
+            return res.status(401).json({ message: 'Токен отсутствует' });
+        }
+    
+        console.log('Полученный токен:', token);
+    
+        const user_id = extractUserIdFromToken(token);
+    
+        console.log('Полученный userId:', user_id);
+
         await pool.query(`
             INSERT INTO comments_ratings (user_id, product_id, comment, rating)
             VALUES ($1, $2, $3, $4);
@@ -357,6 +436,6 @@ const postComment = async (req, res) => {
 };
   
 
-module.exports = { getProducts, getProductById, getProductsByCategoriesId, getProductsByIdMore, 
+module.exports = { getProducts, getProductById, getProductsByCategoriesId, getProductsByIdMore, getProductByIds, 
     getMaxPriceByCategories, getFavorites, postFavorites, deleteFavorites, checkFavorite,
-    getCommentByProductId, getCommentByUserId, postComment };
+    getCommentCount, getCommentByProductId, getCommentByUserId, postComment };

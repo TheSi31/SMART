@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 
 type Section = {
   type: string;
@@ -33,7 +32,6 @@ const News = ({ id }: { id: number }) => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log('Fetched Data:', data); // Логируем данные, полученные от API
 
         // Проверяем, что ответ содержит данные в правильном формате
         if (data && Array.isArray(data) && data.length > 0) {
@@ -64,15 +62,10 @@ const News = ({ id }: { id: number }) => {
     return <p>Новость не найдена.</p>;
   }
 
-  // Логируем, что приходит в news.content
-  console.log('News Content:', news.content);
-
   // Преобразуем sections в массив, если это объект
   const sections = Array.isArray(news.content?.sections)
     ? news.content.sections
     : news.content?.sections ? Object.values(news.content.sections) : [];
-
-  console.log('Sections:', sections); // Логируем sections, чтобы убедиться, что это массив
 
   return (
     <div>

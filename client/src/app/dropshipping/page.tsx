@@ -1,6 +1,40 @@
 import Breacd from "@/component/Breacd";
 import Contact_Us from "@/component/Contcat_Us";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Дропшиппинг | SMART ТЕХНИКА",
+    description: "Присоединяйтесь к SMART ТЕХНИКА и начните дропшиппинг техники без вложений. Простая схема и выгодные условия для партнёров.",
+    robots: "index, follow",
+    openGraph: {
+      title: "Дропшиппинг | SMART ТЕХНИКА",
+      description: "Начните зарабатывать с дропшиппингом техники от SMART ТЕХНИКА. Надёжный поставщик, гибкие условия и поддержка для партнёров.",
+      url: "http://localhost:3000/dropshipping",
+      type: "website",
+      images: [
+        {
+          url: "/dropshipping-banner.jpg", // Изображение, символизирующее доставку, партнёрство или продажи
+          alt: "Дропшиппинг SMART ТЕХНИКА",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Дропшиппинг | SMART ТЕХНИКА",
+      description: "Узнайте, как начать дропшиппинг техники с выгодными условиями от SMART ТЕХНИКА.",
+      images: ["/dropshipping-banner.jpg"],
+    },
+    alternates: {
+      canonical: "http://localhost:3000/dropshipping",
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+  };
+  
+
 const page = () => {
     return (
         <main className="flex flex-col justify-center gap-10 w-10/12 max-xl:w-11/12 mx-auto">

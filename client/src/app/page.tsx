@@ -1,5 +1,39 @@
+import { Metadata } from "next";
+
 import { Carousel, ConfigProvider } from "antd";
 import List_Products from "../component/List_Products";
+
+export const metadata: Metadata = {
+  title: "SMART ТЕХНИКА",
+  description: "Сеть магазинов техники в Санкт-Петербурге. Лучшие цены и большой выбор!",
+  robots: "index, follow",
+  openGraph: {
+    title: "SMART ТЕХНИКА",
+    description: "Сеть магазинов техники в Санкт-Петербурге. Лучшие цены и большой выбор!",
+    url: "http://localhost:3000",
+    type: "website",
+    images: [
+      {
+        url: "/favicon.ico",
+        alt: "Логотип SMART ТЕХНИКА",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SMART ТЕХНИКА",
+    description: "Сеть магазинов техники в Санкт-Петербурге. Лучшие цены и большой выбор!",
+    images: ["/favicon.ico"],
+  },
+  alternates: {
+    canonical: "http://localhost:3000",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+};
+
 
 
 

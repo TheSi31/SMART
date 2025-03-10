@@ -1,17 +1,19 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Breadcrumb, Button, ConfigProvider, Rate, Tabs, Avatar, Modal, Form, Input } from 'antd';
+import { Breadcrumb, Button, ConfigProvider, Rate, Tabs, Avatar, Modal, Form, Input, message } from 'antd';
 import Link from 'next/link';
 import Image from 'next/image';
 import LikeButton from './LikeButton';
 
 import image from "../img/test.png";
-import { UserOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem } from '../store/slice/cartSlice';
 
 import comment from "../img/commet.svg";
 import compare from "../img/menu/compare.svg";
 
 import './Product_More.css';
+import Comment from './Comment';
 
 interface Products {
     id: number,
@@ -37,7 +39,70 @@ const Product_More = ({id}:{id: number}) => {
     const [productsMore, setProductsMore] = useState<ProductsMore[]>();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const 
+    const [rating, setRating] = useState(5);
+    const [commentText, setCommentText] = useState('');
+
+    const token = useSelector((state: { auth: { token: number } }) => state.auth.token);
+
+    const handleRatingChange = (value: number) => {
+        setRating(value);
+    };
+
+    const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setCommentText(event.target.value);
+    };
+
+    const handleOk = () => {
+
+
+        setIsModalOpen(false);
+        try{
+            const response = fetch('http://localhost:3001/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    token: token,
+                    product_id: id,
+                    comment: commentText,
+                    rating: rating
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const dispatch = useDispatch();
+
+    const handleAddToCart = (event:React.MouseEvent) => {
+        event.stopPropagation();
+        const name = product?.name;
+        const price = product?.price;
+        dispatch(addItem({ id: id, name: name, price: price }));
+        success();
+    };
+
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const success = (message: string = 'Товар добавлен в корзину') => {
+        messageApi.open({
+          type: 'success',
+          content: message,
+        });
+    };
+
+    const error = (message: string = 'Произошла ошибка при оформлении заказа') => {
+        messageApi.open({
+          type: 'error',
+          content: message,
+        });
+    };
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -124,7 +189,7 @@ const Product_More = ({id}:{id: number}) => {
                                         colorPrimaryHover: "#1d3b54",
                                     },
                             }}>
-                                <Button type="primary" className='row-start-2 max-sm:row-start-1 col-span-4 max-[380px]:col-span-8 h-full'>В корзину</Button>
+                                <Button type="primary" className='row-start-2 max-sm:row-start-1 col-span-4 max-[380px]:col-span-8 h-full' onClick={handleAddToCart}>В корзину</Button>
                             </ConfigProvider>
                             <Button className='row-start-2 max-sm:row-start-1 max-[380px]:row-start-2 col-span-4 max-[380px]:col-span-8 max-[380px]: h-full'>Купить в 1 клик</Button>
                         </div>
@@ -168,21 +233,7 @@ const Product_More = ({id}:{id: number}) => {
                 <Tabs.TabPane tab="Отзывы" key="3">
                     <h1 className='text-2xl font-semibold py-8'>Отзывы на {product?.name}</h1>
                     <div className='grid grid-cols-2 gap-[130px] max-[1444px]:gap-[40px] max-xl:grid-cols-1 max-xl:gap-4'>
-                        <div className='flex flex-col gap-3 bg-[#EDF2F6] p-10 max-[1444px]:p-6 max-sm:p-5'>
-                            <div className='flex items-center gap-5 justify-between max-sm:flex-col max-sm:items-start'>
-                                <div className='flex items-center gap-2'>
-                                    <Avatar size={50} icon={<UserOutlined />} />
-                                    <h1 className='font-semibold'>Иван Иванов</h1>
-                                    <p>07.07.2023</p>
-                                </div>
-                                <div className='flex items-center gap-2'>
-                                    <Rate disabled allowHalf defaultValue={4.5} />
-                                    <p className="text-sm font-semibold text-[#838688]">(4.5 из 5)</p>
-                                </div>
-                            </div>
-                            <h1 className='font-semibold'>Отличный самокат</h1>
-                            <p>Катаюсь каждый день после работы, заряд держит отлично!</p>
-                        </div>
+                        <Comment productId={product?.id}/>
                         <div className='flex flex-col gap-5'>
                             <div className='flex flex-col gap-1'>
                                 <h1 className='font-semibold'>Напишите своё мнение о товаре</h1>
@@ -195,7 +246,7 @@ const Product_More = ({id}:{id: number}) => {
                     </div>
                 </Tabs.TabPane>
             </Tabs>
-            <Modal open={isModalOpen} onOk={closeModal} onCancel={closeModal}>
+            <Modal open={isModalOpen} onOk={handleOk} onCancel={closeModal}>
                 <Form>
                     <Form.Item>
                         <h2 className="text-2xl font-semibold">Написать отзыв</h2>
@@ -203,13 +254,13 @@ const Product_More = ({id}:{id: number}) => {
                     <Form.Item>
                         <div className="flex flex-col gap-2">
                             <label className="font-normal">Ваша оценка</label>
-                            <Rate defaultValue={3} />
+                            <Rate defaultValue={rating} allowHalf onChange={handleRatingChange} />
                         </div>
                     </Form.Item>
                     <Form.Item>
                         <div className="flex flex-col gap-2">
                             <label className="font-normal">Ваш отзыв</label>
-                            <Input size="large" type="text" />
+                            <Input size="large" type="text" onChange={handleCommentChange} />
                         </div>
                     </Form.Item>
                 </Form>

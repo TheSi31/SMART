@@ -63,7 +63,7 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
                         </Link>
                     </li>
                     <li>
-                        <Link href="#" className="flex flex-col items-center" onClick={onOpenCatalog}>
+                        <Link href="/catalog" className="flex flex-col items-center" onClick={onOpenCatalog}>
                             <Image src={catalog} alt="Каталог"></Image>
                             <h1>Каталог</h1>
                         </Link>

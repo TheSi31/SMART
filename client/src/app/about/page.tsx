@@ -1,3 +1,5 @@
+import Head from 'next/head';
+import type { Metadata } from "next";
 import Image from "next/image";
 
 import hoverboard from "../../img/catalog/hoverboard.svg";
@@ -8,7 +10,37 @@ import bike from "../../img/catalog/bike.svg";
 import more from "../../img/about/more.svg";
 import Breacd from "../../component/Breacd";
 
-
+export const metadata: Metadata = {
+    title: "О нас | SMART ТЕХНИКА",
+    description: "Узнайте больше о SMART ТЕХНИКА — сеть магазинов техники в Санкт-Петербурге. Наша миссия, история и ценности.",
+    robots: "index, follow",
+    openGraph: {
+      title: "О нас | SMART ТЕХНИКА",
+      description: "Узнайте больше о SMART ТЕХНИКА — сеть магазинов техники в Санкт-Петербурге. Наша миссия, история и ценности.",
+      url: "http://localhost:3000/about",
+      type: "website",
+      images: [
+        {
+          url: "/team-photo.jpg", // Подставьте фотографию команды или офиса
+          alt: "Команда SMART ТЕХНИКА",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "О нас | SMART ТЕХНИКА",
+      description: "Узнайте больше о SMART ТЕХНИКА — сеть магазинов техники в Санкт-Петербурге. Наша миссия, история и ценности.",
+      images: ["/team-photo.jpg"],
+    },
+    alternates: {
+      canonical: "http://localhost:3000/about",
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+  };
+  
 
 const page = () => {
     return (

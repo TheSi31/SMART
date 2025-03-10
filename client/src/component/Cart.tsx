@@ -19,6 +19,8 @@ const Cart = () => {
       (state: RootState) => state.cart
     );
 
+    const token = useSelector((state: RootState) => state.auth.token);
+
     const futureDates: string[] = Array.from({ length: 5 }, (_, i) =>
         format(addDays(new Date(), i + 1), 'd MMMM, EEEE', { locale: ru })
     ); 
@@ -43,6 +45,7 @@ const Cart = () => {
 
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
+        token: token,
         cart: [],
         delivery: {
             city: '',
@@ -60,6 +63,7 @@ const Cart = () => {
             name: '',
             phone: '',
         },
+        status: 'В обработке',
     });
 
     useEffect(() => {
@@ -75,6 +79,7 @@ const Cart = () => {
 
     const handleOrder = () => {
         if (
+          !formData.token ||
           !formData.delivery.city ||
           !formData.delivery.address ||
           !formData.delivery.method ||
@@ -86,6 +91,7 @@ const Cart = () => {
           !formData.recipient.phone
         ) {
           error('Пожалуйста, заполните все поля');
+          console.log(formData);
           return;
         }
       
@@ -117,7 +123,7 @@ const Cart = () => {
     const handleEditStep = (step: number) => {
         setCurrentStep(step);
     };
-
+    
     return (
         <div className="grid grid-cols-[2fr_1fr] max-lg:grid-cols-1 gap-10">
             {contextHolder}     

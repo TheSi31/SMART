@@ -1,12 +1,11 @@
-// LoginForm.js
 import React, { useState } from 'react';
 import Link from 'next/link';
-
 import { Checkbox, Input } from 'antd';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../store/slice/authSlice';
-
+import { loginUser } from '@/store/slice/authSlice';
+import { loadCartFromDB } from '@/store/slice/cartSlice';
+import { loadViewedFromDB } from '@/store/slice/viewedSlice';
+import { RootState } from '@/store/store';
 import { LockOutlined } from '@ant-design/icons';
 
 const LoginForm = () => {
@@ -14,18 +13,27 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { isAuthenticated, error } = useSelector((state : any) => state.auth);
+  const { isAuthenticated, error } = useSelector((state: RootState) => state.auth);
 
-  const handleLogin = async (e : any) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
+    // Выполняем вход пользователя
+    const resultAction = await dispatch(loginUser({ email, password })).unwrap();
+
+    if (resultAction.token) {
+      // Загружаем корзину после успешного входа
+      dispatch(loadCartFromDB(resultAction.token));
+
+      // Загружаем просмотренные товары после успешного входа
+      dispatch(loadViewedFromDB(resultAction.token));
+    }
   };
 
   return (
     <div>
       <form onSubmit={handleLogin} className='flex flex-col gap-5'>
         <div className='flex flex-col gap-2'>
-          <label >Эл.почта</label>
+          <label>Эл.почта</label>
           <Input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -33,7 +41,7 @@ const LoginForm = () => {
           />
         </div>
         <div className='flex flex-col gap-2'>
-          <label >Пароль</label>
+          <label>Пароль</label>
           <Input.Password
             value={password}
             prefix={<LockOutlined />}

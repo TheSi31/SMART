@@ -16,11 +16,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "SMART ТЕХНИКА",
-  description: "SMART TEXNIKA Сеть магазинов в Санкт-Петербурге",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type CartItem = {
   id: string|number;
@@ -16,6 +16,35 @@ const initialState: CartState = {
   items: [],
   totalAmount: 0,
 };
+export const loadCartFromDB = createAsyncThunk('cart/loadCart', async (token: string) => {
+  const response = await fetch(`http://localhost:3001/cart/${token}`);
+  if (!response.ok) {
+    throw new Error('Ошибка загрузки корзины');
+  }
+  const data = await response.json();
+  console.log('Данные от сервера:', data); // Добавьте это для проверки полученных данных
+  return data[0].items;
+});
+
+
+export const saveCartToDB = createAsyncThunk(
+  'cart/saveCart',
+  async ({ items, token }: { items: CartItem[]; token: string }) => {
+    const response = await fetch(`http://localhost:3001/cart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ items, token }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при сохранении корзины');
+    }
+
+    return await response.json();
+  }
+);
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -64,6 +93,20 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalAmount = 0;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loadCartFromDB.fulfilled, (state, action) => {
+      if (Array.isArray(action.payload)) {
+        state.items = action.payload;
+        state.totalAmount = state.items.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
+      } else {
+        state.items = [];
+        state.totalAmount = 0;
+      }
+    });
   },
 });
 

@@ -34,7 +34,7 @@ const Footer = () => {
                             <Link href="#">Кредит</Link>
                             <Link href="#">Политика конфиденциальности</Link>
                             <Link href="#">Вопросы и ответы (F.A.Q.)</Link>
-                            <Link href="#">Сервис и гарантия</Link>
+                            <Link href="/service">Сервис и гарантия</Link>
                         </div>
                     </div>
                     <div className="flex flex-col gap-5">
@@ -45,7 +45,7 @@ const Footer = () => {
                             <Link href="#">История компании</Link>
                             <Link href="#">Сотрудничество</Link>
                             <Link href="#">Партнёрская программа</Link>
-                            <Link href="#">Вакансии</Link>
+                            <Link href="/vacancies">Вакансии</Link>
                         </div>
                     </div>
                     <div className="flex flex-col gap-5">

@@ -1,6 +1,40 @@
 import Breacd from "@/component/Breacd";
 import Contact_Us from "@/component/Contcat_Us";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Оптовые закупки | SMART ТЕХНИКА",
+    description: "SMART ТЕХНИКА предлагает выгодные условия для оптовых покупателей. Закупайте технику оптом с максимальной выгодой.",
+    robots: "index, follow",
+    openGraph: {
+      title: "Оптовые закупки | SMART ТЕХНИКА",
+      description: "Оптовые закупки техники в SMART ТЕХНИКА. Лучшие цены, гибкие условия и высокий уровень сервиса для оптовых клиентов.",
+      url: "http://localhost:3000/wholesale",
+      type: "website",
+      images: [
+        {
+          url: "/wholesale-photo.jpg", // Подставьте изображение складов или техники
+          alt: "Оптовый склад SMART ТЕХНИКА",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Оптовые закупки | SMART ТЕХНИКА",
+      description: "Выгодные оптовые закупки техники с лучшими условиями в SMART ТЕХНИКА.",
+      images: ["/wholesale-photo.jpg"],
+    },
+    alternates: {
+      canonical: "http://localhost:3000/wholesale",
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+  };
+  
+
 const page = () => {
     return (
         <main className="flex flex-col justify-center gap-10 w-10/12 max-xl:w-11/12 mx-auto">

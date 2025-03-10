@@ -2,17 +2,23 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const { registerUser, getUsers, getUserProfile, loginUser } = require('./controller/authController');
+const { registerUser, getUsers, getUserProfile, postUserInfo, putUserInfo, resetPassword, checkUserInfoExists, loginUser } = require('./controller/authController');
 
-const { getProducts, getProductById, getProductsByCategoriesId, getProductsByIdMore, 
-  getMaxPriceByCategories, getFavorites, postFavorites, deleteFavorites, checkFavorite,
-  getCommentByProductId, getCommentByUserId, postComment } = require('./controller/productController');
+const { getProducts, getProductById, getProductsByCategoriesId, getProductsByIdMore, getProductByIds,
+  getMaxPriceByCategories,  getFavorites, postFavorites, deleteFavorites, checkFavorite,
+  getCommentCount, getCommentByProductId, getCommentByUserId, postComment } = require('./controller/productController');
 
 const { getCategory, getCategoryById, getCategoryByFilter } = require('./controller/categoryController');
 
 const { getNews, getNewsById } = require('./controller/newsContoller');
 
-const { getOrders, postOrders } = require('./controller/ordersController');
+const { getOrders, getOrdersByUserId, postOrders } = require('./controller/ordersController');
+
+const { getVacancies, postVacancy } = require('./controller/vacanciesController');
+
+const { getCart, postCart, deleteCart } = require('./controller/cartContoller');
+
+const { getViewed, postViewed } = require('./controller/viewedController');
 
 // Разрешаем CORS для всех запросов
 app.use(cors({
@@ -30,10 +36,22 @@ app.post('/register', registerUser);
 app.get('/users', getUsers);
 
 // Маршрут для получения профиля пользователя
-app.get('/profile', getUserProfile);
+app.get('/profile/:token', getUserProfile);
+
+// Маршрут для добавления информации о пользователе
+app.post('/profile', postUserInfo);
+
+// Маршрут для обновления информации о пользователе
+app.put('/profile', putUserInfo);
 
 // Маршрут для авторизации
 app.post('/login', loginUser);
+
+// Маршрут для сброса пароля
+app.post('/reset-password', resetPassword);
+
+// Маршрут для проверки существования пользователя
+app.get('/check-user-info/:token', checkUserInfoExists);
 
 
 
@@ -47,6 +65,9 @@ app.get('/products/:id', getProductById);
 // Маршрут для получения продуктов по ID категории
 app.get('/products/categories/:categoriesId', getProductsByCategoriesId);
 
+// Маршрут для получения продуктов по IDs
+app.get('/products/ids/:ids', getProductByIds);
+
 // Маршрут для получения подробностей о продукте по ID продукта
 app.get('/products/:id/more', getProductsByIdMore);
 
@@ -56,8 +77,24 @@ app.get('/max-price/categories/:categoriesId', getMaxPriceByCategories);
 
 
 
+// Маршрут для получения списка корзины
+app.get('/cart/:token', getCart);
+
+// Маршрут для добавления продукта в корзину
+app.post('/cart', postCart);
+
+// Маршрут для удаления продукта из корзины
+app.delete('/cart', deleteCart);
+
+
+
+
+
 // Маршрут для получения списка заказов
 app.get('/orders', getOrders);
+
+// Маршрут для получения списка заказов пользователя
+app.get('/orders/:token', getOrdersByUserId);
 
 // Маршрут для создания заказа
 app.post('/orders', postOrders);
@@ -80,6 +117,19 @@ app.get('/favorites/check', checkFavorite);
 
 
 
+// Маршрут для получения списка просмотренных продуктов
+app.get('/viewed/:token', getViewed);
+
+// Маршрут для добавления продукта в просмотренные
+app.post('/viewed', postViewed);
+
+
+
+
+
+
+// Маршрут для получения количества комментариев
+app.get('/comments/count/:productId', getCommentCount);
 
 // Маршрут для получения комментариев к продукту
 app.get('/comments/product/:productId', getCommentByProductId);
@@ -114,6 +164,14 @@ app.get('/news', getNews);
 app.get('/news/:id', getNewsById);
 
 
+
+
+
+// Маршрут для получения списка вакансий
+app.get('/vacancies', getVacancies);
+
+// Маршрут для создания вакансии
+app.post('/vacancies', postVacancy);
 
 
 // Маршрут для загрузки изображений

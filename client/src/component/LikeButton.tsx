@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { message } from 'antd';
 
 interface LikeButtonProps {
@@ -20,7 +20,7 @@ function LikeButton({ className = "", productId, onClick }: LikeButtonProps) {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-
+    if (!token) setIsLiked(false);
     // Проверяем наличие лайка у пользователя для данного продукта
     const checkIfLiked = async () => {
       try {

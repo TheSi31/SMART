@@ -8,6 +8,7 @@ import compare from "../img/menu/compare.svg";
 import cart from "../img/menu/cart.svg";
 
 import { useDispatch } from 'react-redux';
+import { addViewedProductId } from '../store/slice/viewedSlice';
 import { addItem } from '../store/slice/cartSlice';
 import LikeButton from "./LikeButton";
 
@@ -43,6 +44,7 @@ const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, 
     };
 
     const handleCardClick = () => {
+        dispatch(addViewedProductId(id));
         window.location.href = links;
     };
 
@@ -65,7 +67,7 @@ const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, 
             {/* Контент карточки */}
             <div className="flex flex-col h-full gap-4">
                 {/* Изображение */}
-                <Image src={image} alt="image" className="w-full h-auto rounded-md" />
+                <Image src={image} alt="image" className="w-full h-auto rounded-md" loading="lazy" />
                 {/* Категория и название */}
                 <div className="flex flex-col gap-2">
                     <p className="text-[#838688] text-sm">{categories}</p>
