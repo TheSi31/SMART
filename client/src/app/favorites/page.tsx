@@ -28,8 +28,9 @@ export const metadata: Metadata = {
 
 const page = () => {
     return (
-        <main className="flex flex-col justify-center gap-20 w-10/12 max-xl:w-11/12 mx-auto">
+        <main className="flex flex-col justify-center gap-10 w-10/12 max-xl:w-11/12 mx-auto">
             <Breacd items={[{name: "Главная", url: "/"}, {name: "Личный кабинет" , url: "/profile/general"}, {name: "Избранное"}]}/>
+            <h2 className="text-4xl font-bold">Избранные товары</h2>
             <List_Favorites />
         </main>
     );

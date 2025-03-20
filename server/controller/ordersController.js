@@ -1,6 +1,5 @@
 const pool = require('./../db');
 
-const transformEncoding = require('../transformEncoding');
 const extractUserIdFromToken = require('../extractUserIdFromToken');
 
 const getOrders = async (req, res) => {
@@ -28,7 +27,7 @@ const getOrdersByUserId = async (req, res) => {
         res.status(200).json(orders.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting orders by user id' });
+        res.status(500).json({ message: 'Ошибка получения заказа по user id' });
     }
 };
 
@@ -46,14 +45,9 @@ const postOrders = async (req, res) => {
       return res.status(401).json({ message: 'Токен отсутствует' });
     }
 
-    console.log('Полученный токен:', token);
-
     const userId = extractUserIdFromToken(token);
 
-    console.log('Полученный userId:', userId);
-
     try {
-      // Правильная сериализация данных cart в JSON-строку
       const serializedCart = JSON.stringify(cart);
   
       const newOrder = await pool.query(

@@ -1,73 +1,88 @@
-
 import React, { useState } from 'react';
-import Link from 'next/link'; 
+import { Input, message } from 'antd';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../store/slice/authSlice';
+const RegisterForm = ({ onClose }: { onClose: () => void }) => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
 
-import { LockOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
+  const [messageApi, contextHolder] = message.useMessage();
 
-const RegisterForm = () => {
-    const dispatch = useDispatch();
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [password, setPassword] = useState('');
-    
-    const registrationStatus = useSelector((state : any) => state.auth.status);
-    const error = useSelector((state : any) => state.auth.error);
+  const handleRegister = (e: React.FormEvent) => {
+    e.preventDefault();
 
-    const handleRegister = (e : any) => {
-        e.preventDefault();
-        dispatch(registerUser({ username, email, phoneNumber, password }));
-    };
+    // Проверяем, что номер телефона корректный
+    if (!/^\+7\d{9}$/.test(phoneNumber)) {
+      messageApi.error("Введите номер в формате +7XXXXXXXXXX");
+      return;
+    }
 
-    return (
-        <div>
-            <form onSubmit={handleRegister} className="flex flex-col gap-5">
-                <div className="flex flex-col gap-2">
-                    <label>Имя</label>
-                    <Input
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <label>Эл. почта</label>
-                    <Input
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <label>Номер телефона</label>
-                    <Input
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <label>Придумайте пароль</label>
-                    <Input.Password
-                        value={password}
-                        prefix={<LockOutlined />}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <label>Регистрируясь, вы соглашаетесь с<Link href="#"> пользовательским соглашением</Link></label>
-                <button className='bg-menu-dark-blue text-white py-2 px-4 rounded' type="submit">Зарегистрироваться</button>
-            </form>
+    // Простая проверка длины пароля
+    if (password.length < 6) {
+      messageApi.error("Пароль должен быть не менее 6 символов");
+      return;
+    }
 
-            {registrationStatus === 'loading' && <p>Загрузка...</p>}
-            {error && <p style={{ color: 'red' }}>Ошибка: {error}</p>}
-            {registrationStatus === 'succeeded' && <p>Регистрация прошла успешно!</p>}
+    // Вывод сообщения об успехе
+    messageApi.success("Регистрация успешна!");
+    console.log({
+      username,
+      email,
+      phoneNumber,
+      password,
+    });
+
+    onClose(); // Закрываем модальное окно
+  };
+
+  return (
+    <div>
+      {contextHolder}
+      <form onSubmit={handleRegister} className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <label>Имя</label>
+          <Input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Введите ваше имя"
+            required
+          />
         </div>
-    );
+        <div className="flex flex-col gap-2">
+          <label>Эл. почта</label>
+          <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="example@example.com"
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label>Номер телефона</label>
+          <Input
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="+7XXXXXXXXXX"
+            required
+          />
+          <small className="text-gray-500">Введите номер в формате +7XXXXXXXXXX</small>
+        </div>
+        <div className="flex flex-col gap-2">
+          <label>Придумайте пароль</label>
+          <Input.Password
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Не менее 6 символов"
+            required
+          />
+        </div>
+        <button className="bg-menu-dark-blue text-white py-2 px-4 rounded" type="submit">
+          Зарегистрироваться
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default RegisterForm;

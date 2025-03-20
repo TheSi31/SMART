@@ -11,7 +11,7 @@ const getCategory = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting catalog' });
+        res.status(500).json({ message: 'Ошибка получения каталога' });
     }
 };
 
@@ -24,7 +24,7 @@ const getCategoryById = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting catalog by id' });
+        res.status(500).json({ message: 'Ошибка получения каталога по id' });
     }
 };
 
@@ -56,7 +56,7 @@ const getCategoryByFilter = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting catalog by id' });
+        res.status(500).json({ message: 'Ошибка получения каталога по id' });
     }
 };
 

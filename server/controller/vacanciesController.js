@@ -1,7 +1,6 @@
 const pool = require('../db');
 
 const transformEncoding = require('../transformEncoding');
-const extractUserIdFromToken = require('../extractUserIdFromToken');
 
 const getVacancies = async (req, res) => {
     try {
@@ -14,7 +13,7 @@ const getVacancies = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting vacancies' });
+        res.status(500).json({ message: 'Ошибка получения вакансий' });
     }
 };
 
@@ -27,10 +26,10 @@ const postVacancy = async (req, res) => {
             VALUES ($1, $2, $3, $4)
         `, [title, description, requirements, conditions]);
 
-        res.status(201).json({ message: 'Vacancy created' });
+        res.status(201).json({ message: 'Вакансия создана' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error creating vacancy' });
+        res.status(500).json({ message: 'Ошибка создания вакансии' });
     }
 };
 

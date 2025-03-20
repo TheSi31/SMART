@@ -1,6 +1,32 @@
 import Breacd from "@/component/Breacd";
 import Link from "next/link";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Каталог товаров | SMART ТЕХНИКА",
+    description: "Исследуйте наш каталог товаров в SMART ТЕХНИКА. Найдите лучшие предложения и широкий ассортимент для ваших нужд.",
+    robots: "index, follow",
+    openGraph: {
+        title: "Каталог товаров | SMART ТЕХНИКА",
+        description: "Широкий выбор товаров по лучшим ценам. Ознакомьтесь с нашим каталогом товаров в SMART ТЕХНИКА.",
+        url: "http://localhost:3000/catalog",
+        type: "website",
+        images: [
+            {
+                url: "/catalog-preview.jpg", 
+                alt: "Каталог товаров SMART ТЕХНИКА",
+            },
+        ],
+    },
+    alternates: {
+        canonical: "http://localhost:3000/catalog",
+    },
+    icons: {
+        icon: "/favicon.ico",
+        apple: "/apple-touch-icon.png",
+    },
+};
 
 
 const page = () => {

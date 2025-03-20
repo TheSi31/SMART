@@ -32,37 +32,34 @@ const List_Orders = () => {
     const startIndex = (currentPage - 1) * pageSize;
     const currentData = orders.slice(startIndex, startIndex + pageSize);
 
-    const handlePageChange = (page) => {
+    const handlePageChange = (page:number) => {
         setCurrentPage(page);
     };
 
     return (
         <div>
-            <h2>История заказов</h2>
-            <div>
-                <List
-                    bordered
-                    dataSource={currentData}
-                    renderItem={(order) => (
-                        <List.Item>
-                            <div className='w-full flex justify-between'>
-                                <p>Заказ #{order.order_id}от {new Date(order.created_at).toLocaleDateString()}</p>
-                                <p>{order.cart.length} товара на сумму {order.payment_total} </p>
-                                <p>{order.status ? order.status : "Статус не указан"}</p>
-                            </div>
-                        </List.Item>
-                    )}
-                />
+            <List
+                bordered
+                dataSource={currentData}
+                renderItem={(order) => (
+                    <List.Item>
+                        <div className='w-full flex justify-between'>
+                            <p>Заказ #{order.order_id}от {new Date(order.created_at).toLocaleDateString()}</p>
+                            <p>{order.cart.length} товара на сумму {order.payment_total} </p>
+                            <p>{order.status ? order.status : "Статус не указан"}</p>
+                        </div>
+                    </List.Item>
+                )}
+            />
 
-                {/* Компонент пагинации */}
-                <Pagination
-                    current={currentPage}
-                    total={orders.length}
-                    pageSize={pageSize}
-                    onChange={handlePageChange}
-                    showSizeChanger={false} // Если не нужно менять размер страницы
-                />
-            </div>
+            {/* Компонент пагинации */}
+            <Pagination
+                current={currentPage}
+                total={orders.length}
+                pageSize={pageSize}
+                onChange={handlePageChange}
+                showSizeChanger={false} // Если не нужно менять размер страницы
+            />
         </div>
     );
 };

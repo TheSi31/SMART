@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
     res.status(201).json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error registering user' });
+    res.status(500).json({ message: 'Ошибка регистрации пользователя' });
   }
 };
 
@@ -31,19 +31,19 @@ const getUsers = async (req, res) => {
     res.json(users.rows);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error getting users' });
+    res.status(500).json({ message: 'Ошиька получения пользователей' });
   }
 };
 
 const getUserProfile = async (req, res) => {
   try {
-    const { token } = req.params; // Получаем токен из параметров запроса
+    const { token } = req.params;
 
     if (!token) {
       return res.status(401).json({ message: 'Токен отсутствует' });
     }
 
-    const userId = extractUserIdFromToken(token); // Извлечение userId из токена
+    const userId = extractUserIdFromToken(token);
 
     const user = await pool.query(`
       SELECT 
@@ -71,7 +71,7 @@ const getUserProfile = async (req, res) => {
       return res.status(404).json({ message: 'Пользователь не найден' });
     }
 
-    res.json(user.rows[0]); // Возвращаем информацию о пользователе
+    res.json(user.rows[0]);
   } catch (error) {
     console.error('Ошибка при получении профиля пользователя:', error);
     res.status(500).json({ message: 'Ошибка при получении профиля пользователя' });
@@ -97,7 +97,7 @@ const resetPassword = async (req, res) => {
     res.status(200).json({ message: 'Пароль успешно изменен' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error resetting password' });
+    res.status(500).json({ message: 'Ошибка изменения пароля' });
   }
 };
 
@@ -105,10 +105,8 @@ const postUserInfo = async (req, res) => {
   try {
     const { token, username, email, phone_number, address, payment_method, delivery_method, city } = req.body;
 
-    // Извлечение userId из токена
     const userId = extractUserIdFromToken(token);
 
-    // Вставляем данные в таблицу users
     await pool.query(`
       UPDATE users
       SET username = $1,
@@ -117,16 +115,15 @@ const postUserInfo = async (req, res) => {
       WHERE id = $4
     `, [username, email, phone_number, userId]);
 
-    // Вставляем данные в таблицу user_info
     await pool.query(`
       INSERT INTO user_info (user_id, city, address, payment_method, delivery_method)
       VALUES ($1, $2, $3, $4, $5)
     `, [userId, city, address, payment_method, delivery_method]);
 
-    res.status(201).json({ message: "User info created successfully" });
+    res.status(201).json({ message: "Пользовательские данные успешно созданы" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error creating user info" });
+    res.status(500).json({ message: "Ошибка создание пользовательских данных" });
   }
 };
 
@@ -135,10 +132,8 @@ const putUserInfo = async (req, res) => {
   try {
     const { token, username, email, phone_number, address, payment_method, delivery_method, city } = req.body;
 
-    // Извлечение userId из токена
     const userId = extractUserIdFromToken(token);
 
-    // Обновляем данные в таблице users
     await pool.query(`
       UPDATE users
       SET username = $1,
@@ -147,7 +142,6 @@ const putUserInfo = async (req, res) => {
       WHERE id = $4
     `, [username, email, phone_number, userId]);
 
-    // Обновляем данные в таблице user_info
     await pool.query(`
       UPDATE user_info
       SET city = $1,
@@ -157,10 +151,10 @@ const putUserInfo = async (req, res) => {
       WHERE user_id = $5
     `, [city, address, payment_method, delivery_method, userId]);
 
-    res.status(200).json({ message: "User info updated successfully" });
+    res.status(200).json({ message: "Пользовательские данные успешно обновлены" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error updating user info" });
+    res.status(500).json({ message: "Ошибка обновления пользовательских данных" });
   }
 };
 
@@ -188,13 +182,13 @@ const loginUser = async (req, res) => {
     const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
     if (user.rows.length === 0) {
-      return res.status(400).json({ message: 'User not found' });
+      return res.status(400).json({ message: 'Пользователь не найден' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.rows[0].password_hash);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Неверные данные' });
     }
 
     const token = jwt.sign({ userId: user.rows[0].id }, "dashailoveyou");
@@ -202,7 +196,7 @@ const loginUser = async (req, res) => {
     res.json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error logging in' });
+    res.status(500).json({ message: 'Ошибка входа' });
   }
 };
 

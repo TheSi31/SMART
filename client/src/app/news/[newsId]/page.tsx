@@ -18,7 +18,7 @@ export const generateMetadata = async ({ params }: any) => {
           openGraph: {
             title: news.title ? `${news.title} | SMART ТЕХНИКА` : "Новость | SMART ТЕХНИКА",
             description: news.summary || "Читайте последние новости SMART ТЕХНИКА.",
-            url: `https://yourwebsite.com/news/${id}`,
+            url: `https://localhost:3000/news/${id}`,
             type: "article",
             images: [
               {

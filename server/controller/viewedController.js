@@ -1,6 +1,5 @@
 const pool = require('../db');
 
-const transformEncoding = require('../transformEncoding');
 const extractUserIdFromToken = require('../extractUserIdFromToken');
 
 const getViewed = async (req, res) => {
@@ -23,7 +22,7 @@ const getViewed = async (req, res) => {
             return res.status(404).json({ message: 'Нет просмотренных товаров для данного пользователя' });
         }
 
-        res.status(200).json(viewed.rows.map(row => row.product_id)); // Возвращаем только массив product_id
+        res.status(200).json(viewed.rows.map(row => row.product_id));
     } catch (error) {
         console.error('Ошибка при получении просмотренных товаров:', error);
         res.status(500).json({ message: 'Ошибка сервера' });
@@ -32,13 +31,12 @@ const getViewed = async (req, res) => {
 
 
 const postViewed = async (req, res) => {
-    const { token, productIds } = req.body; // Ожидаем массив productIds
+    const { token, productIds } = req.body;
 
     if (!token) {
         return res.status(401).json({ message: 'Токен отсутствует' });
     }
 
-    // Проверка корректности productIds
     if (!Array.isArray(productIds) || productIds.length === 0 || productIds.some(isNaN)) {
         return res.status(400).json({ message: 'Некорректные productIds' });
     }

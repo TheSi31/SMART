@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Checkbox, Input } from 'antd';
+
+import { Checkbox, Input, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '@/store/slice/authSlice';
 import { loadCartFromDB } from '@/store/slice/cartSlice';
@@ -8,31 +9,45 @@ import { loadViewedFromDB } from '@/store/slice/viewedSlice';
 import { RootState } from '@/store/store';
 import { LockOutlined } from '@ant-design/icons';
 
-const LoginForm = () => {
+const LoginForm = ({ onClose }: { onClose: () => void }) => {
   const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const { isAuthenticated, error } = useSelector((state: RootState) => state.auth);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const { error } = useSelector((state: RootState) => state.auth);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Выполняем вход пользователя
-    const resultAction = await dispatch(loginUser({ email, password })).unwrap();
+    if (!email || !password) {
+      messageApi.error({ content: "Пожалуйста, заполните все поля." });
+      return;
+    }
 
-    if (resultAction.token) {
-      // Загружаем корзину после успешного входа
-      dispatch(loadCartFromDB(resultAction.token));
+    try {
+      const resultAction = await dispatch(loginUser({ email, password })).unwrap();
 
-      // Загружаем просмотренные товары после успешного входа
-      dispatch(loadViewedFromDB(resultAction.token));
+      if (resultAction.token) {
+        dispatch(loadCartFromDB(resultAction.token));
+        dispatch(loadViewedFromDB(resultAction.token));
+        onClose();
+        messageApi.success({ content: "Вы успешно вошли в систему!" });
+      } else {
+        messageApi.error({ content: "Неправильный логин или пароль" });
+      }
+    } catch (error) {
+      messageApi.error({ content: "Неправильный логин или пароль" });
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleLogin} className='flex flex-col gap-5'>
-        <div className='flex flex-col gap-2'>
+      {contextHolder}
+      <form onSubmit={handleLogin} className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
           <label>Эл.почта</label>
           <Input
             value={email}
@@ -40,7 +55,7 @@ const LoginForm = () => {
             required
           />
         </div>
-        <div className='flex flex-col gap-2'>
+        <div className="flex flex-col gap-2">
           <label>Пароль</label>
           <Input.Password
             value={password}
@@ -48,17 +63,14 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Link href="/" className='text-[#4878A6]'>Забыли пароль?</Link>
+          <Link href="/" className="text-[#4878A6]">Забыли пароль?</Link>
         </div>
-        <Checkbox>Запомнить меня</Checkbox>
-        <button className='bg-menu-dark-blue text-white py-2 px-4 rounded' type="submit">Войти</button>
+        <Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)}>
+          Запомнить меня
+        </Checkbox>
+        <button className="bg-menu-dark-blue text-white py-2 px-4 rounded" type="submit">Войти</button>
       </form>
-      {isAuthenticated && 
-        <div>
-          <p>Вы успешно вошли в систему!</p>
-        </div>
-      }
-      {error && <p>Error: {error}</p>}
+      {error && <p>Error: {typeof error === 'string' ? error : 'Произошла ошибка'}</p>}
     </div>
   );
 };

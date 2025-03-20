@@ -28,7 +28,7 @@ const getProducts = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting products' });
+        res.status(500).json({ message: 'Ошибка получения продуктов' });
     }
 };
 
@@ -58,7 +58,7 @@ const getProductById = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting product by id' });
+        res.status(500).json({ message: 'Ошибка получения продукта по id' });
     }
 };
 
@@ -96,7 +96,6 @@ const getProductsByCategoriesId = async (req, res) => {
         const productsResult = await pool.query(productsQuery, queryParams);
         const transformedProducts = transformEncoding(productsResult.rows);
 
-        // Получение характеристик для всех продуктов
         const productIds = transformedProducts.map((product) => product.id);
         if (productIds.length > 0) {
             const characteristicsQuery = `
@@ -111,7 +110,6 @@ const getProductsByCategoriesId = async (req, res) => {
             const characteristicsResult = await pool.query(characteristicsQuery, [productIds]);
             const characteristics = transformEncoding(characteristicsResult.rows);
 
-            // Добавление характеристик к каждому продукту
             transformedProducts.forEach((product) => {
                 product.characteristics = characteristics
                     .filter((ch) => ch.product_id === product.id)
@@ -125,7 +123,7 @@ const getProductsByCategoriesId = async (req, res) => {
         res.status(200).json(transformedProducts);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting products by categories id' });
+        res.status(500).json({ message: 'Ошибка получения продукта по id категории' });
     }
 };
 
@@ -152,7 +150,7 @@ const getProductsByIdMore = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting products by id more' });
+        res.status(500).json({ message: 'Ошибка получения подробности продутка по id' });
     }
 };
 
@@ -216,14 +214,71 @@ const getMaxPriceByCategories = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting max price' });
+        res.status(500).json({ message: 'Ошибка получения максимальной цены' });
     }
 };
 
-const getFavorites = async (req, res) => {
-    const token = req.params.token;
+const getProductToCompare = async (req, res) => {
+    try {
+      const productId = req.params.id;
+  
+      // Запрос для основного продукта
+      const productQuery = `
+        SELECT 
+            p.id,
+            p.categories_id, 
+            c.name AS categories, 
+            p.name, 
+            p.price, 
+            p.old_price, 
+            p.is_new, 
+            p.is_best_seller, 
+            p.image_url, 
+            p.description
+        FROM products p
+        JOIN categories c ON p.categories_id = c.id
+        WHERE p.id = $1;
+      `;
+      const productResult = await pool.query(productQuery, [productId]);
+  
+      if (productResult.rowCount === 0) {
+        return res.status(404).json({ message: 'Продукт не найден' });
+      }
+  
+      // Преобразуем данные для продукта
+      const product = transformEncoding(productResult.rows)[0];
+  
+      // Запрос для характеристик продукта
+      const characteristicsQuery = `
+        SELECT 
+            ct.name AS characteristic_name, 
+            pc.value AS characteristic_value
+        FROM product_characteristics pc
+        JOIN characteristics_templates ct ON pc.template_id = ct.id
+        WHERE pc.product_id = $1;
+      `;
+      const characteristicsResult = await pool.query(characteristicsQuery, [productId]);
+  
+      const characteristics = transformEncoding(characteristicsResult.rows || []);
+  
+      // Добавляем характеристики в продукт
+      product.characteristics = characteristics.map((ch) => ({
+        name: ch.characteristic_name,
+        value: ch.characteristic_value,
+      }));
+  
+      res.status(200).json(product);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Ошибка получение продукта для сравнения' });
+    }
+  };
+  
 
-    console.log(token);
+
+const getFavorites = async (req, res) => {
+
+    const token = req.params.token;
 
     if (!token) {
         return res.status(401).json({ message: 'Токен отсутствует' });
@@ -255,7 +310,7 @@ const getFavorites = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting favorites' });
+        res.status(500).json({ message: 'Ошибка получения избранных' });
     }
 };
 
@@ -268,18 +323,14 @@ const postFavorites = async (req, res) => {
         return res.status(401).json({ message: 'Токен отсутствует' });
       }
   
-      console.log('Полученный токен:', token);
-  
       const userId = extractUserIdFromToken(token);
-  
-      console.log('Полученный userId:', userId);
   
       await pool.query(`
         INSERT INTO favorites (user_id, product_id)
         VALUES ($1, $2);
       `, [userId, product_id]);
   
-      res.status(201).json({ message: 'Product added to favorites' });
+      res.status(201).json({ message: 'Продукт добавлен в избранные' });
   
     } catch (error) {
       console.error('Ошибка обработки токена или запроса:', error.message);
@@ -296,21 +347,17 @@ const deleteFavorites = async (req, res) => {
             return res.status(401).json({ message: 'Токен отсутствует' });
         }
     
-        console.log('Полученный токен:', token);
-    
         const userId = extractUserIdFromToken(token);
-    
-        console.log('Полученный userId:', userId);
 
         await pool.query(`
             DELETE FROM favorites
             WHERE user_id = $1 AND product_id = $2;
         `, [userId, product_id]);
 
-        res.status(200).json({ message: 'Product removed from favorites' });
+        res.status(200).json({ message: 'Продукт удален с избранных' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error removing product from favorites' });
+        res.status(500).json({ message: 'Ошибка при удаления продукта из избранных' });
     }
 };
 
@@ -329,7 +376,7 @@ const checkFavorite = async (req, res) => {
       res.json({ liked: result.rowCount > 0 });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Error checking favorite' });
+      res.status(500).json({ message: 'Ошибка проверки избранных' });
     }
 };
 
@@ -357,7 +404,7 @@ const getCommentCount = async (req, res) => {
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting comments' });
+        res.status(500).json({ message: 'Ошибка получения комментариев' });
     }
 };
 
@@ -381,7 +428,7 @@ const getCommentByUserId = async (req, res) => {
         res.status(200).json(comments.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting comments' });
+        res.status(500).json({ message: 'Ошибка получения комментариев' });
     }
 };
 
@@ -404,7 +451,7 @@ const getCommentByProductId = async (req, res) => {
         res.status(200).json(comments.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting comments' });
+        res.status(500).json({ message: 'Ошибка получения комментариев' });
     }
 };
 
@@ -416,26 +463,22 @@ const postComment = async (req, res) => {
         if (!token) {
             return res.status(401).json({ message: 'Токен отсутствует' });
         }
-    
-        console.log('Полученный токен:', token);
-    
+
         const user_id = extractUserIdFromToken(token);
-    
-        console.log('Полученный userId:', user_id);
 
         await pool.query(`
             INSERT INTO comments_ratings (user_id, product_id, comment, rating)
             VALUES ($1, $2, $3, $4);
         `, [user_id, product_id, comment, rating]);
 
-        res.status(201).json({ message: 'Comment created' });
+        res.status(201).json({ message: 'Комментарий добавлен' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error creating comment' });
+        res.status(500).json({ message: 'Ошибка при добавления комментария' });
     }
 };
   
 
 module.exports = { getProducts, getProductById, getProductsByCategoriesId, getProductsByIdMore, getProductByIds, 
-    getMaxPriceByCategories, getFavorites, postFavorites, deleteFavorites, checkFavorite,
+    getMaxPriceByCategories, getProductToCompare, getFavorites, postFavorites, deleteFavorites, checkFavorite,
     getCommentCount, getCommentByProductId, getCommentByUserId, postComment };

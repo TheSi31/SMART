@@ -1,3 +1,4 @@
+import Breacd from "@/component/Breacd";
 import Contcat_Us from "@/component/Contcat_Us";
 import { Metadata } from "next";
 
@@ -35,7 +36,9 @@ export const metadata: Metadata = {
 
 const page = () => {
     return (
-        <main className="flex flex-col justify-center gap-20 w-10/12 max-xl:w-11/12 mx-auto">
+        <main className="flex flex-col justify-center gap-10 w-10/12 max-xl:w-11/12 mx-auto">
+            <Breacd items={[{name: "Главная", url: "/"}, {name: "Контакты"}]} />
+            <h2 className="text-4xl font-bold">Контакты</h2>
             <Contcat_Us/>
         </main>
     );

@@ -22,7 +22,7 @@ const getCart = async (req, res) => {
         res.status(200).json(cart.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting cart' });
+        res.status(500).json({ message: 'Ошибка получения корзины' });
     }
 };
 

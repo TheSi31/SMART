@@ -100,7 +100,6 @@ const List_Favorites = () => {
 
     return (
         <div>
-            <h2>Избранные товары</h2>
             <div className="grid grid-cols-[25%_75%] gap-4 max-sm:grid-cols-1">
                 <div className="max-sm:hidden">
                     {token ? (

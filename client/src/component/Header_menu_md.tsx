@@ -63,7 +63,7 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
                         </Link>
                     </li>
                     <li>
-                        <Link href="/catalog" className="flex flex-col items-center" onClick={onOpenCatalog}>
+                        <Link href="#" className="flex flex-col items-center" onClick={onOpenCatalog}>
                             <Image src={catalog} alt="Каталог"></Image>
                             <h1>Каталог</h1>
                         </Link>
@@ -112,7 +112,7 @@ const Header_menu_md = ({menu_items: antd_items}: {menu_items: MenuProps['items'
                             <Link href="/about">О компании</Link>
                         </li>
                         <li className="flex items-center py-4 border-b border-b-[#C8CACB] cursor-pointer hover:text-xl hover:border-b-[#868889] transition-all duration-300 ease-out">
-                            <Link href="/promotions">Акции</Link>
+                            <Link href="/promos">Акции</Link>
                         </li>
                         <li className="flex items-center py-4 border-b border-b-[#C8CACB] cursor-pointer hover:text-xl hover:border-b-[#868889] transition-all duration-300 ease-out">
                             <Link href="/installment">Рассрочка 0|0|18</Link>

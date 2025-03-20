@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { updateQuantity, removeItem } from '@/store/slice/cartSlice';
+import { clearCart } from '@/store/slice/cartSlice';
 import { RootState } from '../store/store';
+
 import Image from 'next/image';
 import { Button, Input, Radio, Select, message } from 'antd';
 
@@ -18,6 +21,16 @@ const Cart = () => {
     const { items, totalAmount } = useSelector(
       (state: RootState) => state.cart
     );
+
+    const isAuthenticated = useSelector((state: { auth: { isAuthenticated: boolean } }) => state.auth.isAuthenticated);
+
+    if(!isAuthenticated){
+        return <p>Авторизуйтесь на сайте</p>
+    }
+
+    if (!items || items.length === 0) {
+        return <p>У вас нет покупок</p>;
+    }
 
     const token = useSelector((state: RootState) => state.auth.token);
 
@@ -104,6 +117,7 @@ const Cart = () => {
         }).then((response) => {
           if (response.ok) {
             success();
+            dispatch(clearCart());
             return response.json();
           } else {
             error();

@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { message } from 'antd';
@@ -14,7 +15,6 @@ function LikeButton({ className = "", productId, onClick }: LikeButtonProps) {
 
   const isAuthenticated = useSelector((state: { auth: { isAuthenticated: boolean } }) => state.auth.isAuthenticated);
   const token = useSelector((state: { auth: { token: number } }) => state.auth.token);
-
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -71,14 +71,14 @@ function LikeButton({ className = "", productId, onClick }: LikeButtonProps) {
       const result = await response.json();
       setIsLiked(!isLiked);
       messageApi.open({ type: 'success', content: result.message });
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       messageApi.open({ type: 'error', content: error.message || 'Произошла ошибка' });
     }
   };
 
   return (
-    <div
+    <a
       onClick={handleClick}
       className={`box-content col-start-4 border border-gray-300 rounded-md cursor-pointer transition-transform duration-300 ${
         isLiked ? "animate-wiggle" : ""
@@ -98,7 +98,7 @@ function LikeButton({ className = "", productId, onClick }: LikeButtonProps) {
           className="transition-colors duration-300"
         />
       </svg>
-    </div>
+    </a>
   );
 }
 

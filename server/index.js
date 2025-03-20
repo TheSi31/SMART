@@ -5,12 +5,14 @@ const app = express();
 const { registerUser, getUsers, getUserProfile, postUserInfo, putUserInfo, resetPassword, checkUserInfoExists, loginUser } = require('./controller/authController');
 
 const { getProducts, getProductById, getProductsByCategoriesId, getProductsByIdMore, getProductByIds,
-  getMaxPriceByCategories,  getFavorites, postFavorites, deleteFavorites, checkFavorite,
+  getMaxPriceByCategories, getProductToCompare, getFavorites, postFavorites, deleteFavorites, checkFavorite,
   getCommentCount, getCommentByProductId, getCommentByUserId, postComment } = require('./controller/productController');
 
 const { getCategory, getCategoryById, getCategoryByFilter } = require('./controller/categoryController');
 
 const { getNews, getNewsById } = require('./controller/newsContoller');
+
+const { getPromos, getPromoById } = require('./controller/promosController');
 
 const { getOrders, getOrdersByUserId, postOrders } = require('./controller/ordersController');
 
@@ -70,6 +72,9 @@ app.get('/products/ids/:ids', getProductByIds);
 
 // Маршрут для получения подробностей о продукте по ID продукта
 app.get('/products/:id/more', getProductsByIdMore);
+
+// Маршрут для получения продуктов для сравнения
+app.get('/products/compare/:id', getProductToCompare);
 
 // Маршрут для получения максимальной цены
 app.get('/max-price/categories/:categoriesId', getMaxPriceByCategories);
@@ -166,6 +171,15 @@ app.get('/news/:id', getNewsById);
 
 
 
+// Маршрут для получения списка акций
+app.get('/promos', getPromos);
+
+// Маршрут для получения акции по ID
+app.get('/promos/:id', getPromoById);
+
+
+
+
 
 // Маршрут для получения списка вакансий
 app.get('/vacancies', getVacancies);
@@ -177,7 +191,7 @@ app.post('/vacancies', postVacancy);
 // Маршрут для загрузки изображений
 app.use('/uploads/products', express.static('img/products'));
 
-// Запуск сервера
+
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

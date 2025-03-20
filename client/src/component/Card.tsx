@@ -1,16 +1,19 @@
 import Image from "next/image";
 
 import image from "../img/test.png";
-import { Button, ConfigProvider, Rate, message } from "antd";
+import { Button, ConfigProvider, Rate, message, Skeleton } from "antd";
 
 import comment from "../img/commet.svg";
-import compare from "../img/menu/compare.svg";
+
 import cart from "../img/menu/cart.svg";
 
 import { useDispatch } from 'react-redux';
 import { addViewedProductId } from '../store/slice/viewedSlice';
 import { addItem } from '../store/slice/cartSlice';
+
 import LikeButton from "./LikeButton";
+import CompareButton from "./CompareButton";
+import ImageWithSkeleton from "./ImageWithSkeleton";
 
 interface CardProps {
     id: number;
@@ -48,6 +51,7 @@ const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, 
         window.location.href = links;
     };
 
+
     return (
         <div className="w-80 max-sm:max-w-72 p-5 relative border border-gray-300 cursor-pointer" onClick={handleCardClick}>
             {contextHolder}
@@ -67,7 +71,7 @@ const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, 
             {/* Контент карточки */}
             <div className="flex flex-col h-full gap-4">
                 {/* Изображение */}
-                <Image src={image} alt="image" className="w-full h-auto rounded-md" loading="lazy" />
+                <ImageWithSkeleton src={image} alt={name} className="w-full h-auto rounded-md" />
                 {/* Категория и название */}
                 <div className="flex flex-col gap-2">
                     <p className="text-[#838688] text-sm">{categories}</p>
@@ -91,9 +95,7 @@ const Card = ({ id, categories, name, price, old_price, is_new, is_best_seller, 
                         </div>
                     </div>
                     <LikeButton productId={id} />
-                    <div className="col-start-5 border border-gray-200 rounded-md">
-                        <Image src={compare} alt="compare" />
-                    </div>
+                    <CompareButton productId={id} />
                     <div className="col-span-4">
                         <ConfigProvider
                             theme={{

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 const page = () => {
     return (
-        <main className="flex flex-col justify-center gap-10 py-10 w-10/12 max-xl:w-11/12 mx-auto">
+        <main className="flex flex-col justify-center gap-10 w-10/12 max-xl:w-11/12 mx-auto">
             <Breacd items={[{name: "Главная", url: "/"}, {name: "Просмотренные товары"}]}/>
             <h2 className="text-3xl font-bold">Просмотренные товары</h2>
             <List_Viewed />

@@ -11,7 +11,7 @@ const getNews = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting news' });
+        res.status(500).json({ message: 'Ошибка получения новостей' });
     }
 };
 
@@ -24,7 +24,7 @@ const getNewsById = async (req, res) => {
         res.status(200).json(transformedRows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error getting news by id' });
+        res.status(500).json({ message: 'Ошибка получения новостей по id' });
     }
 };
 

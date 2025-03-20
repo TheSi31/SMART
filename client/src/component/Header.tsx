@@ -113,7 +113,9 @@ const Header = () => {
                             <Link href="/favorites">
                                 <Image src={like} alt="like" className="h-12 w-12"/>
                             </Link>
-                            <Image src={compare} alt="compare" className="h-12 w-12"/>
+                            <Link href="/compare">
+                                <Image src={compare} alt="compare" className="h-12 w-12"/>
+                            </Link>
                             <Link href="/cart">
                                 <Image src={cart} alt="cart" className="h-12 w-12"/>
                             </Link>
@@ -148,7 +150,7 @@ const Header = () => {
                                     </Link>
                                 </li>
                                 <li className="flex items-center cursor-pointer h-full hover:font-normal transition-all duration-300 ease-out">
-                                    <Link className="flex items-center w-full h-full" href="/promotions">
+                                    <Link className="flex items-center w-full h-full" href="/promos">
                                         <p>Акции</p>
                                     </Link>
                                 </li>
